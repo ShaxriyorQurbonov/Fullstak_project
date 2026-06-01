@@ -1,0 +1,84 @@
+{
+  "diseases": [
+    {
+      "id": 1,
+      "icdCode": "I10",
+      "description": "Essential (primary) hypertension",
+      "severity": "Moderate",
+      "patientId": 1,
+      "diagnosisDate": "2024-12-01",
+      "notes": "",
+      "createdAt": "2024-12-01T00:00:00.000Z"
+    },
+    {
+      "id": 2,
+      "icdCode": "J18.0",
+      "description": "Pneumonia, unspecified organism",
+      "severity": "Moderate",
+      "patientId": 2,
+      "diagnosisDate": "2024-11-20",
+      "notes": "Prescribed amoxicillin.",
+      "createdAt": "2024-11-20T00:00:00.000Z"
+    },
+    {
+      "id": 3,
+      "icdCode": "G43.9",
+      "description": "Migraine, unspecified",
+      "severity": "Mild",
+      "patientId": 2,
+      "diagnosisDate": "2024-08-05",
+      "notes": "",
+      "createdAt": "2024-08-05T00:00:00.000Z"
+    },
+    {
+      "id": 4,
+      "icdCode": "L30.9",
+      "description": "Dermatitis, unspecified",
+      "severity": "Mild",
+      "patientId": 4,
+      "diagnosisDate": "2024-10-01",
+      "notes": "Topical treatment prescribed.",
+      "createdAt": "2024-10-01T00:00:00.000Z"
+    },
+    {
+      "id": 5,
+      "icdCode": "E11.9",
+      "description": "Type 2 diabetes mellitus without complications",
+      "severity": "Moderate",
+      "patientId": 5,
+      "diagnosisDate": "2023-03-10",
+      "notes": "Ongoing management.",
+      "createdAt": "2023-03-10T00:00:00.000Z"
+    },
+    {
+      "id": 6,
+      "icdCode": "M79.3",
+      "description": "Panniculitis, unspecified",
+      "severity": "Moderate",
+      "patientId": 5,
+      "diagnosisDate": "2024-07-15",
+      "notes": "",
+      "createdAt": "2024-07-15T00:00:00.000Z"
+    },
+    {
+      "id": 7,
+      "icdCode": "I21.0",
+      "description": "Acute ST-elevation myocardial infarction",
+      "severity": "Critical",
+      "patientId": 3,
+      "diagnosisDate": "2024-09-10",
+      "notes": "Admitted to ICU.",
+      "createdAt": "2024-09-10T00:00:00.000Z"
+    },
+    {
+      "id": 8,
+      "icdCode": "Z13.6",
+      "description": "Encounter for screening for cardiovascular disorders",
+      "severity": "Mild",
+      "patientId": 6,
+      "diagnosisDate": "2025-01-05",
+      "notes": "",
+      "createdAt": "2025-01-05T00:00:00.000Z"
+    }
+  ]
+}

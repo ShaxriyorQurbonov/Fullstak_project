@@ -1,0 +1,64 @@
+{
+  "doctors": [
+    {
+      "id": 1,
+      "name": "Dr. Feruza Karimova",
+      "specialty": "Cardiology",
+      "department": "Cardiology",
+      "contactEmail": "f.karimova@caretrack.clinic",
+      "contactPhone": "+998 90 123 4567",
+      "licenseNumber": "LIC-001",
+      "createdAt": "2026-01-15T00:00:00.000Z"
+    },
+    {
+      "id": 2,
+      "name": "Dr. Bobur Toshmatov",
+      "specialty": "Neurology",
+      "department": "Neurology",
+      "contactEmail": "b.toshmatov@caretrack.clinic",
+      "contactPhone": "+998 91 234 5678",
+      "licenseNumber": "LIC-002",
+      "createdAt": "2026-01-15T00:00:00.000Z"
+    },
+    {
+      "id": 3,
+      "name": "Dr. Maftuna Abdullayeva",
+      "specialty": "Dermatology",
+      "department": "Dermatology",
+      "contactEmail": "m.abdullayeva@caretrack.clinic",
+      "contactPhone": "+998 93 345 6789",
+      "licenseNumber": "LIC-003",
+      "createdAt": "2026-01-15T00:00:00.000Z"
+    },
+    {
+      "id": 4,
+      "name": "Dr. Jasur Rakhimov",
+      "specialty": "Orthopaedics",
+      "department": "Orthopaedics",
+      "contactEmail": "j.rakhimov@caretrack.clinic",
+      "contactPhone": "+998 94 456 7890",
+      "licenseNumber": "LIC-004",
+      "createdAt": "2026-01-15T00:00:00.000Z"
+    },
+    {
+      "id": 5,
+      "name": "Dr. Nilufar Yusupova",
+      "specialty": "General Practice",
+      "department": "General Practice",
+      "contactEmail": "n.yusupova@caretrack.clinic",
+      "contactPhone": "+998 95 567 8901",
+      "licenseNumber": "LIC-005",
+      "createdAt": "2026-01-15T00:00:00.000Z"
+    },
+    {
+      "id": 6,
+      "name": "Dr. Akbar Mirzayev",
+      "specialty": "Cardiology",
+      "department": "Cardiology",
+      "contactEmail": "a.mirzayev@caretrack.clinic",
+      "contactPhone": "+998 90 678 9012",
+      "licenseNumber": "LIC-006",
+      "createdAt": "2026-01-15T00:00:00.000Z"
+    }
+  ]
+}

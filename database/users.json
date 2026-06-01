@@ -1,0 +1,28 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "username": "admin",
+      "password": "$2a$10$3fpsjLeB9ns6LRJmidc5ruywB1NZe7Knoi7VRYOgu6/jsaPlLdDxW",
+      "role": "admin",
+      "name": "Admin User",
+      "createdAt": "2026-01-01T00:00:00.000Z"
+    },
+    {
+      "id": 2,
+      "username": "clinician",
+      "password": "$2a$10$OgeOUvGq7I.dCLA9VoIn0uGWztcPoSOvuPVnf8N4goDBz4yv9u7Ni",
+      "role": "clinician",
+      "name": "Dr. Sarah Smith",
+      "createdAt": "2026-01-01T00:00:00.000Z"
+    },
+    {
+      "id": 3,
+      "username": "receptionist",
+      "password": "$2a$10$SqFm33PcxqGqsTugn4pdNuOUtS/YG2B7IWZX1lRI5oJ1w/1KLzRDG",
+      "role": "receptionist",
+      "name": "John Receptionist",
+      "createdAt": "2026-01-01T00:00:00.000Z"
+    }
+  ]
+}

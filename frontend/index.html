@@ -1,0 +1,3154 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CareTrack MRMS – Tibbiy yozuvlarni boshqarish tizimi</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* ═══════════════════════════════════════════════
+   DESIGN SYSTEM
+═══════════════════════════════════════════════ */
+      :root {
+        --bg: #F8F9FB;
+        --bg2: #FFFFFF;
+        --bg3: #F3F4F6;
+        --border: #E5E7EB;
+        --border2: #D1D5DB;
+        --text: #1F2937;
+        --text2: #6B7280;
+        --text3: #9CA3AF;
+        --accent: #A61E2C;
+        --accent2: #7A1020;
+        --green: #22c55e;
+        --amber: #f59e0b;
+        --red: #ef4444;
+        --purple: #a78bfa;
+
+        --radius: 8px;
+        --radius-lg: 14px;
+        --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        --shadow-sm: 0 2px 6px rgba(0, 0, 0, 0.06);
+
+        --sidebar-w: 240px;
+        --topbar-h: 60px;
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      html {
+        font-size: 15px;
+        scroll-behavior: smooth;
+      }
+
+      body {
+        font-family: "DM Sans", sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        min-height: 100vh;
+        overflow-x: hidden;
+      }
+
+      ::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+      }
+      ::-webkit-scrollbar-track {
+        background: var(--bg3);
+      }
+      ::-webkit-scrollbar-thumb {
+        background: var(--border2);
+        border-radius: 3px;
+      }
+
+      /* ══════════════ TYPOGRAPHY ══════════════ */
+      h1,
+      h2,
+      h3,
+      h4 {
+        font-family: "DM Serif Display", serif;
+        letter-spacing: -0.02em;
+      }
+      code,
+      .mono {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.8rem;
+      }
+
+      /* ══════════════ UTILITY ══════════════ */
+      .hidden {
+        display: none !important;
+      }
+      .flex {
+        display: flex;
+      }
+      .grid {
+        display: grid;
+      }
+      .center {
+        align-items: center;
+        justify-content: center;
+      }
+      .gap-1 {
+        gap: 0.5rem;
+      }
+      .gap-2 {
+        gap: 1rem;
+      }
+      .gap-3 {
+        gap: 1.5rem;
+      }
+      .mt-1 {
+        margin-top: 0.5rem;
+      }
+      .mt-2 {
+        margin-top: 1rem;
+      }
+      .mb-1 {
+        margin-bottom: 0.5rem;
+      }
+      .truncate {
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+
+      /* ══════════════ BADGE ══════════════ */
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        padding: 3px 10px;
+        border-radius: 100px;
+        font-size: 0.72rem;
+        font-weight: 600;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+      }
+      .badge-green {
+        background: rgba(34, 197, 94, 0.15);
+        color: var(--green);
+      }
+      .badge-amber {
+        background: rgba(245, 158, 11, 0.15);
+        color: var(--amber);
+      }
+      .badge-red {
+        background: rgba(239, 68, 68, 0.15);
+        color: var(--red);
+      }
+      .badge-blue {
+        background: rgba(166, 30, 44, 0.1);
+        color: var(--accent);
+      }
+      .badge-purple {
+        background: rgba(167, 139, 250, 0.15);
+        color: var(--purple);
+      }
+
+      /* ══════════════ BUTTONS ══════════════ */
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 8px 18px;
+        border-radius: var(--radius);
+        font-family: "DM Sans", sans-serif;
+        font-size: 0.875rem;
+        font-weight: 500;
+        cursor: pointer;
+        border: none;
+        transition: all 0.15s;
+        text-decoration: none;
+        white-space: nowrap;
+      }
+      .btn:active {
+        transform: scale(0.97);
+      }
+      .btn-primary {
+        background: var(--accent);
+        color: #fff;
+      }
+      .btn-primary:hover {
+        background: var(--accent2);
+      }
+      .btn-ghost {
+        background: transparent;
+        color: var(--text2);
+        border: 1px solid var(--border);
+      }
+      .btn-ghost:hover {
+        background: var(--bg3);
+        color: var(--text);
+        border-color: var(--accent);
+      }
+      .btn-danger {
+        background: rgba(239, 68, 68, 0.15);
+        color: var(--red);
+        border: 1px solid rgba(239, 68, 68, 0.3);
+      }
+      .btn-danger:hover {
+        background: rgba(239, 68, 68, 0.25);
+      }
+      .btn-sm {
+        padding: 5px 12px;
+        font-size: 0.8rem;
+      }
+      .btn-icon {
+        padding: 7px;
+        border-radius: var(--radius);
+      }
+
+      /* ══════════════ INPUTS ══════════════ */
+      .input,
+      .select,
+      .textarea {
+        width: 100%;
+        padding: 9px 14px;
+        background: var(--bg3);
+        border: 1px solid var(--border2);
+        border-radius: var(--radius);
+        color: var(--text);
+        font-family: "DM Sans", sans-serif;
+        font-size: 0.9rem;
+        transition:
+          border-color 0.15s,
+          box-shadow 0.15s;
+        outline: none;
+      }
+      .input:focus,
+      .select:focus,
+      .textarea:focus {
+        border-color: var(--accent);
+        box-shadow: 0 0 0 3px rgba(166, 30, 44, 0.1);
+      }
+      .input::placeholder {
+        color: var(--text3);
+      }
+      .select {
+        cursor: pointer;
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%238ca0b3' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 12px center;
+        padding-right: 36px;
+      }
+      .select option {
+        background: var(--bg2);
+        color: var(--text);
+      }
+      .textarea {
+        resize: vertical;
+        min-height: 80px;
+      }
+
+      label {
+        font-size: 0.82rem;
+        font-weight: 500;
+        color: var(--text2);
+        display: block;
+        margin-bottom: 5px;
+      }
+
+      .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+      }
+      .form-group {
+        margin-bottom: 1rem;
+      }
+
+      /* ══════════════ CARDS ══════════════ */
+      .card {
+        background: var(--bg2);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-lg);
+        padding: 1.5rem;
+        transition: border-color 0.2s;
+      }
+      .card:hover {
+        border-color: var(--border2);
+      }
+      .card-title {
+        font-size: 1.15rem;
+        margin-bottom: 1rem;
+        color: var(--text);
+      }
+
+      /* ══════════════ TABLE ══════════════ */
+      .table-wrap {
+        overflow-x: auto;
+        border-radius: var(--radius-lg);
+        border: 1px solid var(--border);
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      thead tr {
+        background: var(--bg3);
+      }
+      th {
+        padding: 11px 16px;
+        text-align: left;
+        font-size: 0.75rem;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--text2);
+        border-bottom: 1px solid var(--border);
+        white-space: nowrap;
+      }
+      td {
+        padding: 13px 16px;
+        font-size: 0.875rem;
+        border-bottom: 1px solid var(--border);
+        vertical-align: middle;
+      }
+      tbody tr {
+        transition: background 0.12s;
+      }
+      tbody tr:last-child td {
+        border-bottom: none;
+      }
+      tbody tr:hover {
+        background: var(--bg3);
+      }
+
+      .avatar {
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--accent), var(--purple));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        font-size: 0.8rem;
+        color: #fff;
+        flex-shrink: 0;
+      }
+
+      /* ══════════════ MODAL ══════════════ */
+      .modal-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.3);
+        backdrop-filter: blur(4px);
+        z-index: 1000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 1rem;
+      }
+      .modal {
+        background: var(--bg2);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-lg);
+        width: 100%;
+        max-width: 560px;
+        max-height: 90vh;
+        overflow-y: auto;
+        box-shadow: var(--shadow);
+        animation: modalIn 0.2s ease;
+      }
+      .modal-lg {
+        max-width: 720px;
+      }
+      @keyframes modalIn {
+        from {
+          opacity: 0;
+          transform: translateY(-16px) scale(0.97);
+        }
+      }
+      .modal-header {
+        padding: 1.25rem 1.5rem;
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .modal-header h3 {
+        font-size: 1.1rem;
+      }
+      .modal-body {
+        padding: 1.5rem;
+      }
+      .modal-footer {
+        padding: 1rem 1.5rem;
+        border-top: 1px solid var(--border);
+        display: flex;
+        justify-content: flex-end;
+        gap: 0.75rem;
+      }
+
+      /* ══════════════ TOAST ══════════════ */
+      .toast-area {
+        position: fixed;
+        bottom: 1.5rem;
+        right: 1.5rem;
+        z-index: 9999;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+      .toast {
+        background: var(--bg2);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 12px 18px;
+        font-size: 0.875rem;
+        max-width: 320px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        animation: toastIn 0.3s ease;
+        box-shadow: var(--shadow);
+      }
+      @keyframes toastIn {
+        from {
+          opacity: 0;
+          transform: translateX(20px);
+        }
+      }
+      .toast.success {
+        border-left: 3px solid var(--green);
+      }
+      .toast.error {
+        border-left: 3px solid var(--red);
+      }
+      .toast.info {
+        border-left: 3px solid var(--accent);
+      }
+
+      /* ══════════════ SEARCH BAR ══════════════ */
+      .search-bar {
+        position: relative;
+        flex: 1;
+        max-width: 360px;
+      }
+      .search-bar input {
+        width: 100%;
+        padding: 8px 14px 8px 38px;
+        background: var(--bg);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        color: var(--text);
+        font-family: "DM Sans", sans-serif;
+        font-size: 0.875rem;
+        outline: none;
+        transition: border-color 0.15s;
+      }
+      .search-bar input:focus {
+        border-color: var(--accent);
+      }
+      .search-bar input::placeholder {
+        color: var(--text3);
+      }
+      .search-bar svg {
+        position: absolute;
+        left: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--text3);
+      }
+
+      /* ══════════════════════════════════════
+   LOGIN PAGE
+══════════════════════════════════════ */
+      #page-login {
+        min-height: 100vh;
+        display: flex;
+        background: var(--bg);
+      }
+      .login-visual {
+        width: 45%;
+        background: var(--bg2);
+        border-right: 1px solid var(--border);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 3rem;
+        position: relative;
+        overflow: hidden;
+      }
+      .login-visual::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(
+          ellipse 60% 50% at 50% 50%,
+          rgba(166, 30, 44, 0.04) 0%,
+          transparent 70%
+        );
+      }
+      .login-visual-grid {
+        position: absolute;
+        inset: 0;
+        opacity: 0.02;
+        background-image:
+          linear-gradient(var(--accent) 1px, transparent 1px),
+          linear-gradient(90deg, var(--accent) 1px, transparent 1px);
+        background-size: 48px 48px;
+      }
+      .login-logo-mark {
+        width: 72px;
+        height: 72px;
+        border-radius: 18px;
+        background: linear-gradient(135deg, var(--accent), #8B1A24);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2rem;
+        margin-bottom: 1.5rem;
+        box-shadow: 0 8px 32px rgba(166, 30, 44, 0.2);
+      }
+      .login-visual h2 {
+        font-size: 2rem;
+        text-align: center;
+        margin-bottom: 0.75rem;
+      }
+      .login-visual p {
+        color: var(--text2);
+        text-align: center;
+        font-size: 0.9rem;
+        line-height: 1.6;
+        max-width: 280px;
+      }
+
+      .login-stat-row {
+        display: flex;
+        gap: 1.5rem;
+        margin-top: 2.5rem;
+      }
+      .login-stat {
+        text-align: center;
+      }
+      .login-stat .num {
+        font-family: "DM Serif Display", serif;
+        font-size: 1.6rem;
+        color: var(--accent);
+      }
+      .login-stat .lbl {
+        font-size: 0.72rem;
+        color: var(--text3);
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+      }
+
+      .login-form-side {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem;
+      }
+      .login-box {
+        width: 100%;
+        max-width: 400px;
+      }
+      .login-box h1 {
+        font-size: 1.9rem;
+        margin-bottom: 0.4rem;
+      }
+      .login-box .sub {
+        color: var(--text2);
+        font-size: 0.9rem;
+        margin-bottom: 2rem;
+      }
+
+      .role-tabs {
+        display: flex;
+        gap: 0.5rem;
+        margin-bottom: 1.5rem;
+        padding: 4px;
+        background: var(--bg3);
+        border-radius: var(--radius);
+      }
+      .role-tab {
+        flex: 1;
+        padding: 7px;
+        border: none;
+        background: transparent;
+        color: var(--text2);
+        font-family: "DM Sans", sans-serif;
+        font-size: 0.8rem;
+        font-weight: 500;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: all 0.15s;
+        text-align: center;
+      }
+      .role-tab.active {
+        background: var(--bg2);
+        color: var(--text);
+        box-shadow: var(--shadow-sm);
+      }
+
+      /* ══════════════════════════════════════
+   APP SHELL
+══════════════════════════════════════ */
+      #app-shell {
+        display: flex;
+        min-height: 100vh;
+      }
+      #app-shell.hidden {
+        display: none;
+      }
+
+      /* ── Sidebar ── */
+      .sidebar {
+        width: var(--sidebar-w);
+        background: var(--bg2);
+        border-right: 1px solid var(--border);
+        display: flex;
+        flex-direction: column;
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        z-index: 100;
+        transition: transform 0.3s;
+      }
+      .sidebar-logo {
+        padding: 1.1rem 1.25rem;
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .sidebar-logo-icon {
+        width: 36px;
+        height: 36px;
+        border-radius: 9px;
+        flex-shrink: 0;
+        background: linear-gradient(135deg, var(--accent), #8B1A24);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.1rem;
+      }
+      .sidebar-logo-text {
+        line-height: 1.2;
+      }
+      .sidebar-logo-text strong {
+        font-size: 0.9rem;
+        font-weight: 600;
+        display: block;
+      }
+      .sidebar-logo-text span {
+        font-size: 0.7rem;
+        color: var(--text3);
+      }
+
+      .sidebar-section {
+        padding: 0.5rem;
+        margin-top: 0.5rem;
+      }
+      .sidebar-section-label {
+        font-size: 0.68rem;
+        font-weight: 600;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--text3);
+        padding: 0.5rem 0.75rem 0.25rem;
+      }
+      .nav-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 9px 12px;
+        border-radius: var(--radius);
+        cursor: pointer;
+        color: var(--text2);
+        font-size: 0.875rem;
+        font-weight: 500;
+        transition: all 0.12s;
+        text-decoration: none;
+        border: none;
+        background: none;
+        width: 100%;
+        text-align: left;
+      }
+      .nav-item:hover {
+        background: var(--bg3);
+        color: var(--text);
+      }
+      .nav-item.active {
+        background: rgba(0, 180, 216, 0.12);
+        color: var(--accent);
+      }
+      .nav-item svg {
+        flex-shrink: 0;
+      }
+      .nav-badge {
+        margin-left: auto;
+        background: var(--accent);
+        color: #fff;
+        font-size: 0.65rem;
+        font-weight: 700;
+        padding: 1px 7px;
+        border-radius: 100px;
+      }
+
+      .sidebar-footer {
+        margin-top: auto;
+        padding: 1rem;
+        border-top: 1px solid var(--border);
+      }
+      .sidebar-user {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .sidebar-user .avatar {
+        width: 36px;
+        height: 36px;
+        font-size: 0.75rem;
+      }
+      .sidebar-user-info {
+        line-height: 1.3;
+      }
+      .sidebar-user-info strong {
+        font-size: 0.85rem;
+        display: block;
+      }
+      .sidebar-user-info span {
+        font-size: 0.72rem;
+        color: var(--text3);
+      }
+
+      /* ── Topbar ── */
+      .topbar {
+        position: fixed;
+        top: 0;
+        left: var(--sidebar-w);
+        right: 0;
+        height: var(--topbar-h);
+        z-index: 90;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(12px);
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        padding: 0 1.5rem;
+        gap: 1rem;
+      }
+      .topbar-title {
+        font-family: "DM Serif Display", serif;
+        font-size: 1.15rem;
+        font-weight: 400;
+      }
+      .topbar-right {
+        margin-left: auto;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+      }
+
+      /* ── Main Content ── */
+      .main-content {
+        flex: 1;
+        margin-left: var(--sidebar-w);
+        padding-top: var(--topbar-h);
+        min-height: 100vh;
+      }
+      .page-content {
+        padding: 2rem 2rem;
+      }
+      .page-header {
+        margin-bottom: 1.75rem;
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 1rem;
+        flex-wrap: wrap;
+      }
+      .page-header h2 {
+        font-size: 1.7rem;
+        margin-bottom: 0.3rem;
+      }
+      .page-header p {
+        color: var(--text2);
+        font-size: 0.875rem;
+      }
+
+      /* ══════════════════════════════════════
+   DASHBOARD
+══════════════════════════════════════ */
+      .stat-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+      }
+      .stat-card {
+        background: var(--bg2);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-lg);
+        padding: 1.25rem;
+        position: relative;
+        overflow: hidden;
+        transition:
+          transform 0.15s,
+          border-color 0.15s;
+      }
+      .stat-card:hover {
+        transform: translateY(-2px);
+        border-color: var(--border2);
+      }
+      .stat-card::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 80px;
+        height: 80px;
+        border-radius: 0 var(--radius-lg) 0 80px;
+        opacity: 0.06;
+      }
+      .stat-card[data-color="blue"]::after {
+        background: var(--accent);
+      }
+      .stat-card[data-color="green"]::after {
+        background: var(--green);
+      }
+      .stat-card[data-color="amber"]::after {
+        background: var(--amber);
+      }
+      .stat-card[data-color="purple"]::after {
+        background: var(--purple);
+      }
+      .stat-icon {
+        font-size: 1.5rem;
+        margin-bottom: 0.75rem;
+        color: var(--accent);
+      }
+      .stat-num {
+        font-family: "DM Serif Display", serif;
+        font-size: 2rem;
+        line-height: 1;
+        margin-bottom: 0.25rem;
+        color: var(--accent);
+      }
+      .stat-lbl {
+        font-size: 0.8rem;
+        color: var(--text2);
+      }
+      .stat-delta {
+        font-size: 0.75rem;
+        color: var(--green);
+        margin-top: 0.4rem;
+      }
+
+      /* Primary stat cards (4 summary cards) */
+      .stat-card-primary {
+        background: #A61E2C !important;
+        border: 1px solid #A61E2C !important;
+      }
+      .stat-card-primary .stat-icon {
+        color: #FFFFFF !important;
+      }
+      .stat-card-primary .stat-num {
+        color: #FFFFFF !important;
+      }
+      .stat-card-primary .stat-lbl {
+        color: #FFFFFF !important;
+      }
+      .stat-card-primary .stat-delta {
+        color: rgba(255, 255, 255, 0.9) !important;
+      }
+
+      .dash-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.25rem;
+      }
+      .dash-full {
+        grid-column: 1 / -1;
+      }
+
+      /* Activity Feed */
+      .activity-list {
+        list-style: none;
+      }
+      .activity-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        padding: 10px 0;
+        border-bottom: 1px solid var(--border);
+      }
+      .activity-item:last-child {
+        border-bottom: none;
+      }
+      .activity-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        margin-top: 6px;
+        flex-shrink: 0;
+      }
+      .activity-item .info {
+        font-size: 0.875rem;
+        line-height: 1.4;
+      }
+      .activity-item .time {
+        font-size: 0.75rem;
+        color: var(--text3);
+        margin-top: 2px;
+      }
+
+      /* Dept distribution */
+      .dept-bar {
+        margin-bottom: 0.75rem;
+      }
+      .dept-bar .top {
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.8rem;
+        margin-bottom: 4px;
+      }
+      .dept-bar .track {
+        height: 6px;
+        background: var(--bg3);
+        border-radius: 3px;
+        overflow: hidden;
+      }
+      .dept-bar .fill {
+        height: 100%;
+        border-radius: 3px;
+        transition: width 1s ease;
+      }
+
+      /* ══════════════════════════════════════
+   PATIENT PROFILE PAGE
+══════════════════════════════════════ */
+      .profile-header {
+        background: var(--bg2);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-lg);
+        padding: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+        margin-bottom: 1.25rem;
+        flex-wrap: wrap;
+      }
+      .profile-avatar {
+        width: 72px;
+        height: 72px;
+        border-radius: 50%;
+        flex-shrink: 0;
+        background: linear-gradient(135deg, var(--accent), var(--purple));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.6rem;
+        font-weight: 700;
+        color: #fff;
+      }
+      .profile-info h2 {
+        font-size: 1.6rem;
+        margin-bottom: 0.25rem;
+      }
+      .profile-meta {
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+        font-size: 0.82rem;
+        color: var(--text2);
+        margin-top: 0.5rem;
+      }
+      .profile-meta span {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+      }
+      .profile-actions {
+        margin-left: auto;
+        display: flex;
+        gap: 0.5rem;
+      }
+
+      .profile-grid {
+        display: grid;
+        grid-template-columns: 340px 1fr;
+        gap: 1.25rem;
+      }
+
+      /* ══════════════════════════════════════
+   EMPTY STATE
+══════════════════════════════════════ */
+      .empty-state {
+        text-align: center;
+        padding: 4rem 2rem;
+        color: var(--text3);
+      }
+      .empty-state .icon {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+        opacity: 0.4;
+      }
+      .empty-state h3 {
+        font-size: 1.1rem;
+        color: var(--text2);
+        margin-bottom: 0.5rem;
+      }
+      .empty-state p {
+        font-size: 0.875rem;
+      }
+
+      /* ══════════════════════════════════════
+   FILTER ROW
+══════════════════════════════════════ */
+      .filter-row {
+        display: flex;
+        gap: 0.75rem;
+        align-items: center;
+        margin-bottom: 1.25rem;
+        flex-wrap: wrap;
+      }
+      .filter-row .select {
+        width: auto;
+        min-width: 160px;
+      }
+
+      /* ══════════════════════════════════════
+   DETAIL PANEL
+══════════════════════════════════════ */
+      .detail-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 8px 0;
+        border-bottom: 1px solid var(--border);
+        font-size: 0.875rem;
+      }
+      .detail-row:last-child {
+        border-bottom: none;
+      }
+      .detail-row .key {
+        color: var(--text2);
+      }
+      .detail-row .val {
+        font-weight: 500;
+        text-align: right;
+        max-width: 60%;
+        word-break: break-word;
+      }
+
+      /* ══════════════════════════════════════
+   CONFIRM DIALOG
+══════════════════════════════════════ */
+      .confirm-dialog {
+        max-width: 420px;
+      }
+      .confirm-icon {
+        font-size: 2.5rem;
+        text-align: center;
+        margin-bottom: 1rem;
+      }
+      .confirm-dialog p {
+        color: var(--text2);
+        font-size: 0.9rem;
+        text-align: center;
+        line-height: 1.5;
+        margin-bottom: 1.5rem;
+      }
+
+      /* ══════════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════════ */
+      @media (max-width: 1100px) {
+        .stat-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+      @media (max-width: 880px) {
+        .login-visual {
+          display: none;
+        }
+        .profile-grid {
+          grid-template-columns: 1fr;
+        }
+        .form-row {
+          grid-template-columns: 1fr;
+        }
+      }
+      @media (max-width: 768px) {
+        :root {
+          --sidebar-w: 0px;
+        }
+        .sidebar {
+          transform: translateX(-240px);
+        }
+        .sidebar.open {
+          transform: translateX(0);
+          --sidebar-w: 240px;
+        }
+        .topbar,
+        .main-content {
+          left: 0;
+          margin-left: 0;
+        }
+        .dash-grid {
+          grid-template-columns: 1fr;
+        }
+        .stat-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- ═══════════════════════════════════════
+     LOGIN PAGE
+════════════════════════════════════════ -->
+    <div id="page-login">
+      <div class="login-visual">
+        <div class="login-visual-grid"></div>
+        <div
+          style="
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+          "
+        >
+          <div class="login-logo-mark">🏥</div>
+          <h2>CareTrack MRMS</h2>
+          <p>
+            CareTrack klinikasi uchun tibbiy yozuvlarni boshqarish tizimi –
+            xavfsiz, tez va klinitsistlar uchun tuzilgan.
+          </p>
+          <div class="login-stat-row">
+            <div class="login-stat">
+              <div class="num">4</div>
+              <div class="lbl">Bo'limlar</div>
+            </div>
+            <div class="login-stat">
+              <div class="num">3</div>
+              <div class="lbl">Foydalanuvchi rollari</div>
+            </div>
+            <div class="login-stat">
+              <div class="num">24/7</div>
+              <div class="lbl">Kirish</div>
+            </div>
+          </div>
+          <div
+            style="
+              margin-top: 3rem;
+              padding: 1rem 1.5rem;
+              background: var(--bg3);
+              border: 1px solid var(--border2);
+              border-radius: var(--radius-lg);
+              width: 100%;
+              font-size: 0.8rem;
+              color: var(--text2);
+            "
+          >
+            <div
+              style="
+                font-weight: 600;
+                color: var(--text);
+                margin-bottom: 0.5rem;
+                font-size: 0.85rem;
+              "
+            >
+              🔒 Xavfsizlik ogohlantrishi
+            </div>
+            Ushbu tizim tibbiy maxfiylik qonunlari bilan himoyalangan maxfiy
+            bemor ma'lumotlarini o'z ichiga oladi. Ruxsatsiz kirish qat'iyan
+            taqiqlanadi.
+          </div>
+        </div>
+      </div>
+
+      <div class="login-form-side">
+        <div class="login-box">
+          <h1>Xush kelibsiz</h1>
+          <p class="sub">
+            Tibbiy yozuvlarni boshqarish tizimine kirish uchun tizimga kiring
+          </p>
+
+          <div class="role-tabs" id="role-tabs">
+            <button
+              class="role-tab active"
+              data-role="Admin"
+              onclick="selectRole(this)"
+            >
+              Administrator
+            </button>
+            <button
+              class="role-tab"
+              data-role="Clinician"
+              onclick="selectRole(this)"
+            >
+              Klinitsist
+            </button>
+            <button
+              class="role-tab"
+              data-role="Receptionist"
+              onclick="selectRole(this)"
+            >
+              Qabulxona xodimi
+            </button>
+          </div>
+
+          <div class="form-group">
+            <label>Elektron pochta</label>
+            <input
+              class="input"
+              type="text"
+              id="login-email"
+              placeholder="Foydalanuvchi nomi (masalan admin)"
+              autocomplete="username"
+              value="admin"
+            />
+          </div>
+          <div class="form-group">
+            <label>Parol</label>
+            <small
+              style="
+                color: var(--text3);
+                font-size: 0.75rem;
+                display: block;
+                margin-bottom: 0.75rem;
+              "
+              >Test hisoblar: admin / admin123 · clinician / clinic123 ·
+              receptionist / recept123</small
+            >
+            <input
+              class="input"
+              type="password"
+              id="login-pass"
+              placeholder="Parolingizni kiriting"
+              value="admin123"
+            />
+          </div>
+          <div
+            style="
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              margin-bottom: 1.5rem;
+            "
+          >
+            <label
+              style="
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                font-size: 0.82rem;
+                margin: 0;
+                cursor: pointer;
+              "
+            >
+              <input
+                type="checkbox"
+                checked
+                style="accent-color: var(--accent)"
+              />
+              Meni eslab qolish
+            </label>
+            <a
+              href="#"
+              style="
+                font-size: 0.82rem;
+                color: var(--accent);
+                text-decoration: none;
+              "
+              >Parolni unutdingizmi?</a
+            >
+          </div>
+          <button
+            class="btn btn-primary"
+            style="width: 100%; justify-content: center; padding: 11px"
+            onclick="doLogin()"
+          >
+            Kirish →
+          </button>
+
+          <div
+            style="
+              margin-top: 1.5rem;
+              padding: 1rem;
+              background: var(--bg3);
+              border-radius: var(--radius);
+              font-size: 0.8rem;
+              color: var(--text3);
+            "
+          >
+            <strong style="color: var(--text2)">Demo hisob ma'lumotlari</strong
+            ><br />
+            Yuqoridagi istalgan roli foydalaning — hammasi roli bo'yicha mos
+            kirish bilan tizimga kiritadi.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════
+     APP SHELL
+════════════════════════════════════════ -->
+    <div id="app-shell" class="hidden">
+      <!-- Sidebar -->
+      <nav class="sidebar" id="sidebar">
+        <div class="sidebar-logo">
+          <div class="sidebar-logo-icon">🏨</div>
+          <div class="sidebar-logo-text">
+            <strong>CareTrack</strong>
+            <span>MRMS</span>
+          </div>
+        </div>
+
+        <div class="sidebar-section">
+          <div class="sidebar-section-label">Umumiy ko'rinish</div>
+          <button
+            class="nav-item active"
+            data-page="dashboard"
+            onclick="navTo('dashboard', this)"
+          >
+            <svg
+              width="16"
+              height="16"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+              viewBox="0 0 24 24"
+            >
+              <rect x="3" y="3" width="7" height="7" rx="1" />
+              <rect x="14" y="3" width="7" height="7" rx="1" />
+              <rect x="3" y="14" width="7" height="7" rx="1" />
+              <rect x="14" y="14" width="7" height="7" rx="1" />
+            </svg>
+            Boshqaruv paneli
+          </button>
+        </div>
+
+        <div class="sidebar-section">
+          <div class="sidebar-section-label">Yozuvlar</div>
+          <button
+            class="nav-item"
+            data-page="doctors"
+            onclick="navTo('doctors', this)"
+          >
+            <svg
+              width="16"
+              height="16"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+              viewBox="0 0 24 24"
+            >
+              <circle cx="12" cy="8" r="4" />
+              <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" />
+            </svg>
+            Shifokorlar
+            <span class="nav-badge" id="badge-doctors">12</span>
+          </button>
+          <button
+            class="nav-item"
+            data-page="patients"
+            onclick="navTo('patients', this)"
+          >
+            <svg
+              width="16"
+              height="16"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+              viewBox="0 0 24 24"
+            >
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+              <circle cx="9" cy="7" r="4" />
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+              <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+            </svg>
+            Bemorlar
+            <span class="nav-badge" id="badge-patients">48</span>
+          </button>
+          <button
+            class="nav-item"
+            data-page="diseases"
+            onclick="navTo('diseases', this)"
+          >
+            <svg
+              width="16"
+              height="16"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M9 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V9l-6-6z"
+              />
+              <polyline points="9 3 9 9 15 9" />
+              <line x1="12" y1="13" x2="12" y2="17" />
+              <line x1="10" y1="15" x2="14" y2="15" />
+            </svg>
+            Tashxislar
+            <span class="nav-badge" id="badge-diseases">73</span>
+          </button>
+        </div>
+
+        <div class="sidebar-section" id="admin-nav">
+          <div class="sidebar-section-label">Ma'muriyat</div>
+          <button
+            class="nav-item"
+            data-page="settings"
+            onclick="navTo('settings', this)"
+          >
+            <svg
+              width="16"
+              height="16"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+              viewBox="0 0 24 24"
+            >
+              <circle cx="12" cy="12" r="3" />
+              <path
+                d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"
+              />
+            </svg>
+            Tizim sozlamalari
+          </button>
+        </div>
+
+        <div class="sidebar-footer">
+          <div class="sidebar-user">
+            <div class="avatar" id="sidebar-avatar">AD</div>
+            <div class="sidebar-user-info">
+              <strong id="sidebar-name">Dr. Admin</strong>
+              <span id="sidebar-role-label">Administrator</span>
+            </div>
+          </div>
+          <button
+            class="btn btn-ghost btn-sm"
+            style="width: 100%; margin-top: 0.75rem; justify-content: center"
+            onclick="doLogout()"
+          >
+            Chiqish
+          </button>
+        </div>
+      </nav>
+
+      <!-- Topbar -->
+      <header class="topbar">
+        <span class="topbar-title" id="topbar-title">Boshqaruv paneli</span>
+        <div class="topbar-right">
+          <span id="topbar-role-badge" class="badge badge-blue">Admin</span>
+          <div
+            style="
+              width: 32px;
+              height: 32px;
+              border-radius: 50%;
+              background: var(--bg3);
+              border: 1px solid var(--border2);
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              font-size: 0.8rem;
+              cursor: pointer;
+              position: relative;
+            "
+            onclick="toggleNotif()"
+          >
+            🔔
+            <span
+              style="
+                position: absolute;
+                top: 2px;
+                right: 2px;
+                width: 8px;
+                height: 8px;
+                background: var(--red);
+                border-radius: 50%;
+                border: 2px solid var(--bg);
+              "
+            ></span>
+          </div>
+        </div>
+      </header>
+
+      <!-- Main Content -->
+      <main class="main-content">
+        <!-- ── DASHBOARD ── -->
+        <div id="page-dashboard" class="page-content">
+          <div class="page-header">
+            <div>
+              <h2>Sabohingiz baxayin 👋</h2>
+              <p>
+                Bugun CareTrack klinikasida nima sodir bo'layotganini ko'ring
+              </p>
+            </div>
+            <div
+              style="font-size: 0.82rem; color: var(--text3)"
+              id="dash-date"
+            ></div>
+          </div>
+
+          <div class="stat-grid">
+            <div
+              class="stat-card stat-card-primary"
+              data-color="blue"
+              onclick="
+                navTo('doctors', document.querySelector('[data-page=doctors]'))
+              "
+              style="cursor: pointer"
+            >
+              <div class="stat-icon">👨‍⚕️</div>
+              <div class="stat-num" id="stat-doctors">12</div>
+              <div class="stat-lbl">Faol shifokorlar</div>
+              <div class="stat-delta">↑ 2 this month</div>
+            </div>
+            <div
+              class="stat-card stat-card-primary"
+              data-color="green"
+              onclick="
+                navTo(
+                  'patients',
+                  document.querySelector('[data-page=patients]'),
+                )
+              "
+              style="cursor: pointer"
+            >
+              <div class="stat-icon">🙍</div>
+              <div class="stat-num" id="stat-patients">48</div>
+              <div class="stat-lbl">Ro'yxatga olingan bemorlar</div>
+              <div class="stat-delta">↑ 5 this week</div>
+            </div>
+            <div
+              class="stat-card stat-card-primary"
+              data-color="amber"
+              onclick="
+                navTo(
+                  'diseases',
+                  document.querySelector('[data-page=diseases]'),
+                )
+              "
+              style="cursor: pointer"
+            >
+              <div class="stat-icon">📋</div>
+              <div class="stat-num" id="stat-diseases">73</div>
+              <div class="stat-lbl">Yozilgan tashxislar</div>
+              <div class="stat-delta">↑ 8 this week</div>
+            </div>
+            <div class="stat-card stat-card-primary" data-color="purple">
+              <div class="stat-icon">🏥</div>
+              <div class="stat-num">4</div>
+              <div class="stat-lbl">Faol bo'limlar</div>
+              <div class="stat-delta" style="color: var(--text3)">
+                Hammasi faoliyatda
+              </div>
+            </div>
+          </div>
+
+          <div class="dash-grid">
+            <!-- Recent Activity -->
+            <div class="card">
+              <div class="card-title">So'nggi faoliyat</div>
+              <ul class="activity-list" id="dash-activity-list">
+                <li
+                  style="
+                    color: var(--text3);
+                    font-size: 0.85rem;
+                    padding: 0.5rem 0;
+                  "
+                >
+                  Loading…
+                </li>
+              </ul>
+            </div>
+
+            <!-- Department Distribution -->
+            <div class="card">
+              <div class="card-title">Bemorlar bo'yicha bo'lim</div>
+              <div id="dash-dept-bars"></div>
+              <div style="margin-top: 1.5rem">
+                <div class="card-title" style="font-size: 1rem">
+                  Tashxis darajasi
+                </div>
+                <div
+                  style="
+                    display: flex;
+                    gap: 1rem;
+                    flex-wrap: wrap;
+                    margin-top: 0.5rem;
+                  "
+                  id="dash-severity-counts"
+                ></div>
+              </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="card dash-full">
+              <div class="card-title">Tez amallar</div>
+              <div style="display: flex; gap: 0.75rem; flex-wrap: wrap">
+                <button
+                  class="btn btn-ghost"
+                  onclick="openModal('modal-add-patient')"
+                >
+                  <svg
+                    width="15"
+                    height="15"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle cx="12" cy="8" r="4" />
+                    <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" />
+                    <line x1="19" y1="8" x2="19" y2="14" />
+                    <line x1="16" y1="11" x2="22" y2="11" />
+                  </svg>
+                  Bemor ro'yxatga olish
+                </button>
+                <button
+                  class="btn btn-ghost"
+                  onclick="openModal('modal-add-doctor')"
+                  id="qa-add-doctor"
+                >
+                  <svg
+                    width="15"
+                    height="15"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle cx="12" cy="8" r="4" />
+                    <path d="M4 20c0-4 3.6-7 8-7" />
+                    <line x1="19" y1="11" x2="19" y2="17" />
+                    <line x1="16" y1="14" x2="22" y2="14" />
+                  </svg>
+                  Shifokor qo'shish
+                </button>
+                <button
+                  class="btn btn-ghost"
+                  onclick="openModal('modal-add-disease')"
+                >
+                  <svg
+                    width="15"
+                    height="15"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      d="M9 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V9l-6-6z"
+                    />
+                    <line x1="12" y1="13" x2="12" y2="17" />
+                    <line x1="10" y1="15" x2="14" y2="15" />
+                  </svg>
+                  Tashxis qo'shish
+                </button>
+                <button
+                  class="btn btn-ghost"
+                  onclick="
+                    navTo(
+                      'patients',
+                      document.querySelector('[data-page=patients]'),
+                    )
+                  "
+                >
+                  <svg
+                    width="15"
+                    height="15"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle cx="11" cy="11" r="8" />
+                    <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                  </svg>
+                  Yozuvlarni qidirish
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── DOCTORS PAGE ── -->
+        <div id="page-doctors" class="page-content hidden">
+          <div class="page-header">
+            <div>
+              <h2>Shifokorlar</h2>
+              <p>
+                Shifokor profillarini, mutakhassisliklarini va bo'lim
+                tayinlarini boshqarish
+              </p>
+            </div>
+            <button
+              class="btn btn-primary"
+              onclick="openModal('modal-add-doctor')"
+              id="btn-add-doctor"
+            >
+              <svg
+                width="14"
+                height="14"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+                viewBox="0 0 24 24"
+              >
+                <line x1="12" y1="5" x2="12" y2="19" />
+                <line x1="5" y1="12" x2="19" y2="12" />
+              </svg>
+              Shifokor qo'shish
+            </button>
+          </div>
+
+          <div class="filter-row">
+            <div class="search-bar">
+              <svg
+                width="14"
+                height="14"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+              >
+                <circle cx="11" cy="11" r="8" />
+                <line x1="21" y1="21" x2="16.65" y2="16.65" />
+              </svg>
+              <input
+                type="text"
+                placeholder="Shifokorlarni qidirish…"
+                id="search-doctors"
+                oninput="renderDoctors()"
+              />
+            </div>
+            <select class="select" id="filter-dept" onchange="renderDoctors()">
+              <option value="">Barcha bo'limlar</option>
+              <option>Cardiology</option>
+              <option>Neurology</option>
+              <option>Dermatology</option>
+              <option>Orthopaedics</option>
+              <option>General Practice</option>
+            </select>
+          </div>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Shifokor</th>
+                  <th>Mutakhassislik</th>
+                  <th>Bo'lim</th>
+                  <th>Aloqa</th>
+                  <th>Bemorlar</th>
+                  <th>Amallar</th>
+                </tr>
+              </thead>
+              <tbody id="doctors-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- ── PATIENTS PAGE ── -->
+        <div id="page-patients" class="page-content hidden">
+          <div class="page-header">
+            <div>
+              <h2>Bemorlar</h2>
+              <p>Barcha bemor yozuvlarini ko'ring va boshqaring</p>
+            </div>
+            <button
+              class="btn btn-primary"
+              onclick="openModal('modal-add-patient')"
+            >
+              <svg
+                width="14"
+                height="14"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+                viewBox="0 0 24 24"
+              >
+                <line x1="12" y1="5" x2="12" y2="19" />
+                <line x1="5" y1="12" x2="19" y2="12" />
+              </svg>
+              Bemor ro'yxatga olish
+            </button>
+          </div>
+
+          <div class="filter-row">
+            <div class="search-bar">
+              <svg
+                width="14"
+                height="14"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+              >
+                <circle cx="11" cy="11" r="8" />
+                <line x1="21" y1="21" x2="16.65" y2="16.65" />
+              </svg>
+              <input
+                type="text"
+                placeholder="Bemorlarni qidirish…"
+                id="search-patients"
+                oninput="renderPatients()"
+              />
+            </div>
+            <select
+              class="select"
+              id="filter-patient-dept"
+              onchange="renderPatients()"
+            >
+              <option value="">Barcha bo'limlar</option>
+              <option>Cardiology</option>
+              <option>Neurology</option>
+              <option>Dermatology</option>
+              <option>Orthopaedics</option>
+              <option>General Practice</option>
+            </select>
+            <select
+              class="select"
+              id="filter-patient-doctor"
+              onchange="renderPatients()"
+            >
+              <option value="">Barcha shifokorlar</option>
+            </select>
+          </div>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Bemor</th>
+                  <th>T.Y / Yosh</th>
+                  <th>Tayinlangan shifokor</th>
+                  <th>Tashxislar</th>
+                  <th>Holati</th>
+                  <th>Amallar</th>
+                </tr>
+              </thead>
+              <tbody id="patients-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- ── DISEASES PAGE ── -->
+        <div id="page-diseases" class="page-content hidden">
+          <div class="page-header">
+            <div>
+              <h2>Tashxislar</h2>
+              <p>Bemorlarga biriktirilgan tashxis va kasallik yozuvlari</p>
+            </div>
+            <button
+              class="btn btn-primary"
+              onclick="openModal('modal-add-disease')"
+            >
+              <svg
+                width="14"
+                height="14"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+                viewBox="0 0 24 24"
+              >
+                <line x1="12" y1="5" x2="12" y2="19" />
+                <line x1="5" y1="12" x2="19" y2="12" />
+              </svg>
+              Tashxis qo'shish
+            </button>
+          </div>
+
+          <div class="filter-row">
+            <div class="search-bar">
+              <svg
+                width="14"
+                height="14"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+              >
+                <circle cx="11" cy="11" r="8" />
+                <line x1="21" y1="21" x2="16.65" y2="16.65" />
+              </svg>
+              <input
+                type="text"
+                placeholder="ICD kodi yoki tavsif bo'yicha qidirish…"
+                id="search-diseases"
+                oninput="renderDiseases()"
+              />
+            </div>
+            <select
+              class="select"
+              id="filter-severity"
+              onchange="renderDiseases()"
+            >
+              <option value="">Barcha darajalar</option>
+              <option>Yengil</option>
+              <option>O'rtacha</option>
+              <option>Jiddiy</option>
+            </select>
+            <select
+              class="select"
+              id="filter-disease-patient"
+              onchange="renderDiseases()"
+            >
+              <option value="">Barcha bemorlar</option>
+            </select>
+          </div>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>ICD kodi</th>
+                  <th>Tavsif</th>
+                  <th>Bemor</th>
+                  <th>Holat darajasi</th>
+                  <th>Tashxis sanasi</th>
+                  <th>Amallar</th>
+                </tr>
+              </thead>
+              <tbody id="diseases-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- ── PATIENT PROFILE ── -->
+        <div id="page-profile" class="page-content hidden">
+          <div style="margin-bottom: 1rem">
+            <button
+              class="btn btn-ghost btn-sm"
+              onclick="
+                navTo(
+                  'patients',
+                  document.querySelector('[data-page=patients]'),
+                )
+              "
+            >
+              ← Bemorlar sahifasiga orqaga qaytish
+            </button>
+          </div>
+          <div id="profile-content"></div>
+        </div>
+
+        <!-- ── SETTINGS PAGE ── -->
+        <div id="page-settings" class="page-content hidden">
+          <div class="page-header">
+            <div>
+              <h2>Tizim sozlamalari</h2>
+              <p>
+                Tizim keng o'lchamida konfiguratsiyani boshqarish (Faqat
+                administrator)
+              </p>
+            </div>
+          </div>
+          <div
+            style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem"
+          >
+            <div class="card">
+              <div class="card-title">Klinika ma'lumotlari</div>
+              <div class="form-group">
+                <label>Klinika nomi</label
+                ><input class="input" value="CareTrack Klinikasi" />
+              </div>
+              <div class="form-group">
+                <label>Manzil</label
+                ><input class="input" value="123 Medical Centre Road, Shahar" />
+              </div>
+              <div class="form-group">
+                <label>Favqulodda aloqa</label
+                ><input class="input" value="+1 800 CARE-TRACK" />
+              </div>
+              <button
+                class="btn btn-primary btn-sm"
+                onclick="showToast('Sozlamalar saqlandi', 'success')"
+              >
+                O'zgarishlarni saqlash
+              </button>
+            </div>
+            <div class="card">
+              <div class="card-title">Foydalanuvchi kirish nazorati</div>
+              <p
+                style="
+                  font-size: 0.875rem;
+                  color: var(--text2);
+                  margin-bottom: 1rem;
+                "
+              >
+                Ushbu tizim uchun rol ruxsatlari:
+              </p>
+              <div class="detail-row">
+                <span class="key">Administrator</span
+                ><span class="val"
+                  ><span class="badge badge-blue">To'liq kirish</span></span
+                >
+              </div>
+              <div class="detail-row">
+                <span class="key">Klinitsist</span
+                ><span class="val"
+                  ><span class="badge badge-green"
+                    >Bemorlar va tashxislarni ko'rish + yangilash</span
+                  ></span
+                >
+              </div>
+              <div class="detail-row">
+                <span class="key">Qabulxona xodimi</span
+                ><span class="val"
+                  ><span class="badge badge-amber"
+                    >Bemorlarni ro'yxatga olish + shifokorlarni ko'rish</span
+                  ></span
+                >
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-title">Bo'limlar</div>
+              <div id="dept-list">
+                <div class="detail-row">
+                  <span class="key">Kardiologiya</span
+                  ><span class="val"
+                    ><span class="badge badge-green">Faoliyatda</span></span
+                  >
+                </div>
+                <div class="detail-row">
+                  <span class="key">Nevrologiya</span
+                  ><span class="val"
+                    ><span class="badge badge-green">Faoliyatda</span></span
+                  >
+                </div>
+                <div class="detail-row">
+                  <span class="key">Dermatologiya</span
+                  ><span class="val"
+                    ><span class="badge badge-green">Faoliyatda</span></span
+                  >
+                </div>
+                <div class="detail-row">
+                  <span class="key">Ortopediya</span
+                  ><span class="val"
+                    ><span class="badge badge-green">Faoliyatda</span></span
+                  >
+                </div>
+                <div class="detail-row">
+                  <span class="key">Umumiy tibbiyot</span
+                  ><span class="val"
+                    ><span class="badge badge-green">Faoliyatda</span></span
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-title">Tizim ma'lumoti</div>
+              <div class="detail-row">
+                <span class="key">Versiya</span
+                ><span class="val mono">MRMS v1.0.0</span>
+              </div>
+              <div class="detail-row">
+                <span class="key">Muhit</span
+                ><span class="val"
+                  ><span class="badge badge-amber">Tazhribaviy</span></span
+                >
+              </div>
+              <div class="detail-row">
+                <span class="key">Ma'lumotlar bazasi</span
+                ><span class="val mono">PostgreSQL (ulanmagan)</span>
+              </div>
+              <div class="detail-row">
+                <span class="key">Frontend</span
+                ><span class="val mono">HTML / JS / CSS</span>
+              </div>
+              <div class="detail-row">
+                <span class="key">Backend</span
+                ><span class="val" style="color: var(--text3)"
+                  >Ishlab chiqilmoqda</span
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- ═══════════════════════════════════════
+     MODALS
+════════════════════════════════════════ -->
+
+    <!-- Shifokor qo'shish modali -->
+    <div class="modal-overlay hidden" id="modal-add-doctor">
+      <div class="modal">
+        <div class="modal-header">
+          <h3 id="doctor-modal-title">Yangi shifokor qo'shish</h3>
+          <button
+            class="btn btn-ghost btn-icon btn-sm"
+            onclick="closeModal('modal-add-doctor')"
+          >
+            ✕
+          </button>
+        </div>
+        <div class="modal-body">
+          <input type="hidden" id="doctor-edit-id" />
+          <div class="form-row">
+            <div class="form-group">
+              <label>Ism *</label
+              ><input
+                class="input"
+                id="doctor-fname"
+                placeholder="masalan Feruza"
+              />
+            </div>
+            <div class="form-group">
+              <label>Familiya *</label
+              ><input
+                class="input"
+                id="doctor-lname"
+                placeholder="masalan Karimova"
+              />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Mutakhassislik *</label>
+              <select class="select" id="doctor-specialty">
+                <option value="">Mutakhassislikni tanlang…</option>
+                <option>Cardiologist</option>
+                <option>Neurologist</option>
+                <option>Dermatologist</option>
+                <option>Orthopaedic Surgeon</option>
+                <option>General Practitioner</option>
+                <option>Radiologist</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Bo'lim *</label>
+              <select class="select" id="doctor-dept">
+                <option value="">Bo'limni tanlang…</option>
+                <option>Cardiology</option>
+                <option>Neurology</option>
+                <option>Dermatology</option>
+                <option>Orthopaedics</option>
+                <option>General Practice</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Elektron pochta</label
+              ><input
+                class="input"
+                id="doctor-email"
+                type="email"
+                placeholder="doctor@caretrack.clinic"
+              />
+            </div>
+            <div class="form-group">
+              <label>Telefon</label
+              ><input
+                class="input"
+                id="doctor-phone"
+                placeholder="+998 90 123 4567"
+              />
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Izohlar / Bio</label
+            ><textarea
+              class="textarea"
+              id="doctor-notes"
+              placeholder="Ixtiyoriy professional izohlar…"
+            ></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button
+            class="btn btn-ghost"
+            onclick="closeModal('modal-add-doctor')"
+          >
+            Bekor qilish
+          </button>
+          <button class="btn btn-primary" onclick="saveDoctor()">
+            Shifokorni saqlash
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bemor qo'shish modali -->
+    <div class="modal-overlay hidden" id="modal-add-patient">
+      <div class="modal modal-lg">
+        <div class="modal-header">
+          <h3 id="patient-modal-title">Yangi bemorni ro'yxatga olish</h3>
+          <button
+            class="btn btn-ghost btn-icon btn-sm"
+            onclick="closeModal('modal-add-patient')"
+          >
+            ✕
+          </button>
+        </div>
+        <div class="modal-body">
+          <input type="hidden" id="patient-edit-id" />
+          <div class="form-row">
+            <div class="form-group">
+              <label>Ism *</label
+              ><input
+                class="input"
+                id="patient-fname"
+                placeholder="masalan Alibek"
+              />
+            </div>
+            <div class="form-group">
+              <label>Familiya *</label
+              ><input
+                class="input"
+                id="patient-lname"
+                placeholder="masalan Nazarov"
+              />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Tug'ilgan sana *</label
+              ><input class="input" id="patient-dob" type="date" />
+            </div>
+            <div class="form-group">
+              <label>Jins</label>
+              <select class="select" id="patient-gender">
+                <option>Erkak</option>
+                <option>Ayol</option>
+                <option>Boshqa</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Telefon</label
+              ><input
+                class="input"
+                id="patient-phone"
+                placeholder="+998 90 000 0000"
+              />
+            </div>
+            <div class="form-group">
+              <label>Elektron pochta</label
+              ><input
+                class="input"
+                id="patient-email"
+                type="email"
+                placeholder="bemor@email.com"
+              />
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Manzil</label
+            ><input
+              class="input"
+              id="patient-address"
+              placeholder="To'liq manzil"
+            />
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Tayinlangan shifokor *</label>
+              <select class="select" id="patient-doctor">
+                <option value="">Shifokorni tanlang…</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Holati</label>
+              <select class="select" id="patient-status">
+                <option>Faoliyatda</option>
+                <option>Tushirildi</option>
+                <option>Kutilmoqda</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Tibbiy tarix izohlar</label
+            ><textarea
+              class="textarea"
+              id="patient-notes"
+              placeholder="Har qanday tegishli tibbiy tarix…"
+            ></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button
+            class="btn btn-ghost"
+            onclick="closeModal('modal-add-patient')"
+          >
+            Bekor qilish
+          </button>
+          <button class="btn btn-primary" onclick="savePatient()">
+            Bemorni saqlash
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tashxis qo'shish modali -->
+    <div class="modal-overlay hidden" id="modal-add-disease">
+      <div class="modal">
+        <div class="modal-header">
+          <h3 id="disease-modal-title">Tashxis yozuvini qo'shish</h3>
+          <button
+            class="btn btn-ghost btn-icon btn-sm"
+            onclick="closeModal('modal-add-disease')"
+          >
+            ✕
+          </button>
+        </div>
+        <div class="modal-body">
+          <input type="hidden" id="disease-edit-id" />
+          <div class="form-row">
+            <div class="form-group">
+              <label>ICD kodi *</label
+              ><input
+                class="input"
+                id="disease-icd"
+                placeholder="masalan J18.0"
+              />
+            </div>
+            <div class="form-group">
+              <label>Holat darajasi *</label>
+              <select class="select" id="disease-severity">
+                <option value="">Holat darajasini tanlang…</option>
+                <option>Yengil</option>
+                <option>O'rtacha</option>
+                <option>Jiddiy</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Tashxis tavsifi *</label
+            ><input
+              class="input"
+              id="disease-desc"
+              placeholder="masalan Jamoadagi pnevmoniya"
+            />
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Bemor *</label>
+              <select class="select" id="disease-patient">
+                <option value="">Bemorni tanlang…</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Tashxis sanasi *</label
+              ><input class="input" id="disease-date" type="date" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Klinitsistik izohlar</label
+            ><textarea
+              class="textarea"
+              id="disease-notes"
+              placeholder="Qo'shimcha klinitsistik izohlar…"
+            ></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button
+            class="btn btn-ghost"
+            onclick="closeModal('modal-add-disease')"
+          >
+            Bekor qilish
+          </button>
+          <button class="btn btn-primary" onclick="saveDisease()">
+            Tashxisni saqlash
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tasdiqlovchi o'chirish modali -->
+    <div class="modal-overlay hidden" id="modal-confirm">
+      <div class="modal confirm-dialog">
+        <div class="modal-body" style="text-align: center; padding: 2rem">
+          <div class="confirm-icon">🗑️</div>
+          <h3 style="margin-bottom: 0.75rem" id="confirm-title">
+            Yozuvni o'chirish
+          </h3>
+          <p id="confirm-message">
+            Ushbu yozuvni o'chirishni tasdiqlaysizmi? Ushbu amal qaytarilmaydi.
+          </p>
+          <div style="display: flex; gap: 0.75rem; justify-content: center">
+            <button class="btn btn-ghost" onclick="closeModal('modal-confirm')">
+              Bekor qilish
+            </button>
+            <button class="btn btn-danger" id="confirm-ok-btn">
+              O'chirish
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Toasts -->
+    <div class="toast-area" id="toast-area"></div>
+
+    <!-- ═══════════════════════════════════════
+     JAVASCRIPT
+════════════════════════════════════════ -->
+    <script>
+      /* ══════════════ STATE ══════════════ */
+      var currentRole = 'Admin';
+      var currentPage = 'dashboard';
+
+      const DEPTS = ['Cardiology','Neurology','Dermatology','Orthopaedics','General Practice'];
+
+      var doctors = [
+        {id:1,fname:'Feruza',lname:'Karimova',specialty:'Cardiologist',dept:'Cardiology',email:'f.karimova@caretrack.clinic',phone:'+998 90 123 4567',notes:'Senior cardiologist with 12 years experience.'},
+        {id:2,fname:'Bobur',lname:'Toshmatov',specialty:'Neurologist',dept:'Neurology',email:'b.toshmatov@caretrack.clinic',phone:'+998 91 234 5678',notes:''},
+        {id:3,fname:'Maftuna',lname:'Abdullayeva',specialty:'Dermatologist',dept:'Dermatology',email:'m.abdullayeva@caretrack.clinic',phone:'+998 93 345 6789',notes:''},
+        {id:4,fname:'Jasur',lname:'Rakhimov',specialty:'Orthopaedic Surgeon',dept:'Orthopaedics',email:'j.rakhimov@caretrack.clinic',phone:'+998 94 456 7890',notes:''},
+        {id:5,fname:'Nilufar',lname:'Yusupova',specialty:'General Practitioner',dept:'General Practice',email:'n.yusupova@caretrack.clinic',phone:'+998 95 567 8901',notes:''},
+        {id:6,fname:'Akbar',lname:'Mirzayev',specialty:'Cardiologist',dept:'Cardiology',email:'a.mirzayev@caretrack.clinic',phone:'+998 90 678 9012',notes:''},
+      ];
+
+      var patients = [
+        {id:1,fname:'Alibek',lname:'Nazarov',dob:'1985-03-12',gender:'Male',phone:'+998 97 111 2233',email:'alibek@mail.uz',address:'Tashkent, Yunusabad',doctorId:1,status:'Active',notes:''},
+        {id:2,fname:'Dilnoza',lname:'Yusupova',dob:'1992-07-25',gender:'Female',phone:'+998 90 222 3344',email:'dilnoza@mail.uz',address:'Tashkent, Chilanzar',doctorId:2,status:'Active',notes:'Allergic to penicillin'},
+        {id:3,fname:'Sherzod',lname:'Tursunov',dob:'1978-11-05',gender:'Male',phone:'+998 93 333 4455',email:'sherzod@mail.uz',address:'Tashkent, Mirzo-Ulugbek',doctorId:1,status:'Active',notes:''},
+        {id:4,fname:'Kamola',lname:'Ergasheva',dob:'2001-01-30',gender:'Female',phone:'+998 94 444 5566',email:'kamola@mail.uz',address:'Tashkent, Sergeli',doctorId:3,status:'Discharged',notes:''},
+        {id:5,fname:'Nodir',lname:'Holmatov',dob:'1965-09-18',gender:'Male',phone:'+998 91 555 6677',email:'nodir@mail.uz',address:'Tashkent, Shaykhantahur',doctorId:4,status:'Active',notes:'Diabetes Type 2'},
+        {id:6,fname:'Zulfiya',lname:'Rakhimova',dob:'1995-04-22',gender:'Female',phone:'+998 95 666 7788',email:'zulfiya@mail.uz',address:'Tashkent, Uchtepa',doctorId:5,status:'Pending',notes:''},
+      ];
+
+      var diseases = [
+        {id:1,icd:'I21.0',desc:'Acute ST-elevation myocardial infarction',patientId:3,severity:'Critical',date:'2024-09-10',notes:'Admitted to ICU.'},
+        {id:2,icd:'J18.0',desc:'Pneumonia, unspecified organism',patientId:2,severity:'Moderate',date:'2024-11-20',notes:'Prescribed amoxicillin.'},
+        {id:3,icd:'G43.9',desc:'Migraine, unspecified',patientId:2,severity:'Mild',date:'2024-08-05',notes:''},
+        {id:4,icd:'L30.9',desc:'Dermatitis, unspecified',patientId:4,severity:'Mild',date:'2024-10-01',notes:'Topical treatment prescribed.'},
+        {id:5,icd:'M79.3',desc:'Panniculitis, unspecified',patientId:5,severity:'Moderate',date:'2024-07-15',notes:''},
+        {id:6,icd:'E11.9',desc:'Type 2 diabetes mellitus without complications',patientId:5,severity:'Moderate',date:'2023-03-10',notes:'Ongoing management.'},
+        {id:7,icd:'I10',desc:'Essential (primary) hypertension',patientId:1,severity:'Moderate',date:'2024-12-01',notes:''},
+        {id:8,icd:'Z13.6',desc:'Encounter for screening for cardiovascular disorders',patientId:6,severity:'Mild',date:'2025-01-05',notes:''},
+      ];
+
+      var nextDoctorId = 7, nextPatientId = 7, nextDiseaseId = 9;
+
+      /* ══════════════ AUTH ══════════════ */
+      function selectRole(btn) {
+        document.querySelectorAll('.role-tab').forEach(t => t.classList.remove('active'));
+        btn.classList.add('active');
+        currentRole = btn.dataset.role;
+        // Auto-fill credentials when a role tab is clicked
+        const credMap = {
+          Admin:        { user: 'admin',        pass: 'admin123'   },
+          Clinician:    { user: 'clinician',    pass: 'clinic123'  },
+          Receptionist: { user: 'receptionist', pass: 'recept123'  }
+        };
+        const creds = credMap[btn.dataset.role];
+        if (creds) {
+          const u = document.getElementById('login-email');
+          const p = document.getElementById('login-pass');
+          if (u) u.value = creds.user;
+          if (p) p.value = creds.pass;
+        }
+      }
+
+      function doLogin() {
+        const email = document.getElementById('login-email').value.trim();
+        if (!email) { showToast('Elektron pochtangizni kiriting.', 'error'); return; }
+
+        document.getElementById('page-login').style.display = 'none';
+        document.getElementById('app-shell').classList.remove('hidden');
+
+        // Roll qo'llash
+        const nameMap = { Admin: 'Administrator', Clinician: 'Dr. Klinitsist', Receptionist: 'Qabulxona xodimi' };
+        document.getElementById('sidebar-name').textContent = nameMap[currentRole] || currentRole;
+        document.getElementById('sidebar-role-label').textContent = currentRole;
+        document.getElementById('topbar-role-badge').textContent = currentRole;
+        document.getElementById('sidebar-avatar').textContent = currentRole.slice(0,2).toUpperCase();
+
+        const badgeClass = { Admin: 'badge-blue', Clinician: 'badge-green', Receptionist: 'badge-amber' };
+        const badge = document.getElementById('topbar-role-badge');
+        badge.className = 'badge ' + (badgeClass[currentRole] || 'badge-blue');
+
+        // Admin-only nav
+        document.getElementById('admin-nav').style.display = currentRole === 'Admin' ? '' : 'none';
+        document.getElementById('btn-add-doctor').style.display = currentRole === 'Admin' ? '' : 'none';
+        document.getElementById('qa-add-doctor').style.display = currentRole === 'Admin' ? '' : 'none';
+
+        document.getElementById('dash-date').textContent = new Date().toLocaleDateString('en-GB', {weekday:'long',year:'numeric',month:'long',day:'numeric'});
+
+        populateSelects();
+        renderDoctors();
+        renderPatients();
+        renderDiseases();
+
+        showToast(`Xush kelibsiz, ${nameMap[currentRole]}`, 'success');
+      }
+
+      function doLogout() {
+        document.getElementById('app-shell').classList.add('hidden');
+        document.getElementById('page-login').style.display = '';
+      }
+
+      /* ══════════════ NAVIGATION ══════════════ */
+      const pages = ['dashboard','doctors','patients','diseases','profile','settings'];
+
+      function navTo(page, btnEl) {
+        // Roll nazorati: Qabulxona xodimi tashxislarni ko'ra olmaydi
+        if (page === 'diseases' && typeof currentRole !== 'undefined' && currentRole === 'Receptionist') {
+          showToast("Kirish rad etildi: Qabulxona xodimlari tashxislarni ko'ra olmadilar.", 'error');
+          return;
+        }
+        currentPage = page;
+        sessionStorage.setItem('mrms_page', page);
+        pages.forEach(p => {
+          const el = document.getElementById('page-'+p);
+          if (el) el.classList.toggle('hidden', p !== page);
+        });
+        document.querySelectorAll('.nav-item').forEach(n => {
+          n.classList.toggle('active', n.dataset.page === page);
+        });
+        const titleMap = { dashboard:'Boshqaruv paneli', doctors:'Shifokorlar', patients:'Bemorlar', diseases:'Tashxislar', profile:'Bemor profili', settings:'Tizim sozlamalari' };
+        document.getElementById('topbar-title').textContent = titleMap[page] || page;
+
+        if (page === 'dashboard') renderDashboard();
+        if (page === 'doctors')   renderDoctors();
+        if (page === 'patients')  renderPatients();
+        if (page === 'diseases')  renderDiseases();
+      }
+
+      /* ══════════════ MODALS ══════════════ */
+      function openModal(id) {
+        document.getElementById(id).classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+      }
+      function closeModal(id) {
+        document.getElementById(id).classList.add('hidden');
+        document.body.style.overflow = '';
+      }
+      document.querySelectorAll('.modal-overlay').forEach(o => {
+        o.addEventListener('click', e => { if (e.target === o) closeModal(o.id); });
+      });
+
+      /* ══════════════ TOAST ══════════════ */
+      function showToast(msg, type='info') {
+        const area = document.getElementById('toast-area');
+        const icons = { success:'✅', error:'❌', info:'ℹ️' };
+        const t = document.createElement('div');
+        t.className = `toast ${type}`;
+        t.innerHTML = `<span>${icons[type]||''}</span><span>${msg}</span>`;
+        area.appendChild(t);
+        setTimeout(() => t.remove(), 3200);
+      }
+
+      /* ══════════════ SELECT POPULATION ══════════════ */
+      function populateSelects() {
+        // Doctor filter selects
+        const doctorOpts = doctors.map(d => `<option value="${d.id}">${d.fname} ${d.lname}</option>`).join('');
+        ['filter-patient-doctor','patient-doctor'].forEach(id => {
+          const el = document.getElementById(id);
+          if (!el) return;
+          const base = id.startsWith('filter') ? '<option value="">Barcha shifokorlar</option>' : '<option value="">Shifokorni tanlang...</option>';
+          el.innerHTML = base + doctorOpts;
+        });
+
+        const patientOpts = patients.map(p => `<option value="${p.id}">${p.fname} ${p.lname}</option>`).join('');
+        ['filter-disease-patient','disease-patient'].forEach(id => {
+          const el = document.getElementById(id);
+          if (!el) return;
+          const base = id.startsWith('filter') ? '<option value="">Barcha bemorlar</option>' : '<option value="">Bemorni tanlang...</option>';
+          el.innerHTML = base + patientOpts;
+        });
+      }
+
+      function refreshSelects() {
+        populateSelects();
+        document.getElementById('badge-doctors').textContent = doctors.length;
+        document.getElementById('badge-patients').textContent = patients.length;
+        document.getElementById('badge-diseases').textContent = diseases.length;
+        document.getElementById('stat-doctors').textContent = doctors.length;
+        document.getElementById('stat-patients').textContent = patients.length;
+        document.getElementById('stat-diseases').textContent = diseases.length;
+        renderDashboard();
+      }
+
+      /* ══════════════ HELPERS ══════════════ */
+      function initials(fname, lname) { return (fname[0]||'') + (lname[0]||''); }
+      function getAge(dob) {
+        const diff = Date.now() - new Date(dob).getTime();
+        return Math.floor(diff / (365.25 * 24 * 3600 * 1000));
+      }
+      function getDoctorName(id) {
+        const d = doctors.find(x => x.id === id);
+        return d ? `Dr. ${d.fname} ${d.lname}` : '—';
+      }
+      function getPatientName(id) {
+        const p = patients.find(x => x.id === id);
+        return p ? `${p.fname} ${p.lname}` : '—';
+      }
+      function severityBadge(s) {
+        const key = (s || '').toString().toLowerCase();
+        const map = {
+          mild:     { label: "Yengil",   cls: 'badge-green' },
+          moderate: { label: "O'rtacha", cls: 'badge-amber' },
+          severe:   { label: "Og'ir",    cls: 'badge-red' },
+          critical: { label: "Jiddiy",   cls: 'badge-red' }
+        };
+        const entry = map[key] || { label: s, cls: 'badge-blue' };
+        return `<span class="badge ${entry.cls}">${entry.label}</span>`;
+      }
+      function statusBadge(s) {
+        const map = { Active:'badge-green', Discharged:'badge-red', Pending:'badge-amber' };
+        return `<span class="badge ${map[s]||'badge-blue'}">${s}</span>`;
+      }
+
+      /* ══════════════ DASHBOARD ══════════════ */
+      function renderDashboard() {
+        // ── Recent Activity: last 8 records by createdAt across all entities ──
+        const DEPT_COLORS = {
+          Cardiology: 'var(--red)', Neurology: 'var(--purple)',
+          Dermatology: 'var(--amber)', Orthopaedics: 'var(--green)',
+          'General Practice': 'var(--accent)'
+        };
+
+        const events = [];
+        doctors.forEach(d => {
+          if (d._raw && d._raw.createdAt) events.push({
+            ts: new Date(d._raw.createdAt),
+            color: 'var(--accent)',
+            text: `Dr. <strong>${d.fname} ${d.lname}</strong> ${d.dept} bo'limiga qo'shildi`
+          });
+        });
+        patients.forEach(p => {
+          if (p._raw && p._raw.createdAt) events.push({
+            ts: new Date(p._raw.createdAt),
+            color: 'var(--green)',
+            text: `Bemor <strong>${p.fname} ${p.lname}</strong> ro'yxatga olingan`
+          });
+        });
+        diseases.forEach(d => {
+          const pName = getPatientName(d.patientId);
+          if (d._raw && d._raw.createdAt) events.push({
+            ts: new Date(d._raw.createdAt),
+            color: d.severity === 'Critical' ? 'var(--red)' : d.severity === 'Severe' ? 'var(--amber)' : 'var(--purple)',
+            text: `Bemor <strong>${pName}</strong> uchun tashxis <strong>${d.icd}</strong> qo'shildi`
+          });
+        });
+        events.sort((a, b) => b.ts - a.ts);
+
+          function timeAgo(ts) {
+            const diff = Date.now() - ts.getTime();
+            const mins = Math.floor(diff / 60000);
+            const hrs  = Math.floor(diff / 3600000);
+            const days = Math.floor(diff / 86400000);
+            if (mins < 1)   return 'Shu zoti';
+            if (mins < 60)  return `${mins}m oldin`;
+            if (hrs  < 24)  return `${hrs} soat oldin`;
+            if (days === 1) return 'Kecha';
+            return `${days} kun oldin`;
+          }
+
+        const actEl = document.getElementById('dash-activity-list');
+        if (actEl) {
+          if (!events.length) {
+            actEl.innerHTML = '<li style="color:var(--text3);font-size:0.85rem;padding:0.5rem 0">Hozircha faoliyat yo\'q.</li>';
+          } else {
+            actEl.innerHTML = events.slice(0, 8).map(e => `
+              <li class="activity-item">
+                <div class="activity-dot" style="background:${e.color}"></div>
+                <div class="info">
+                  <div>${e.text}</div>
+                  <div class="time">${timeAgo(e.ts)}</div>
+                </div>
+              </li>`).join('');
+          }
+        }
+
+        // ── Patients by Department ──
+        const deptCount = {};
+        patients.forEach(p => {
+          const doc = doctors.find(d => d.id === p.doctorId);
+          const dept = doc ? doc.dept : 'Unknown';
+          deptCount[dept] = (deptCount[dept] || 0) + 1;
+        });
+        const deptEntries = Object.entries(deptCount).sort((a, b) => b[1] - a[1]);
+        const maxPat = deptEntries.length ? deptEntries[0][1] : 1;
+        const deptBarsEl = document.getElementById('dash-dept-bars');
+        if (deptBarsEl) {
+          if (!deptEntries.length) {
+            deptBarsEl.innerHTML = '<p style="color:var(--text3);font-size:0.85rem">Bemorlar hali yo\'q.</p>';
+          } else {
+            deptBarsEl.innerHTML = deptEntries.map(([dept, count]) => {
+              const pct = Math.round((count / maxPat) * 100);
+              const col = DEPT_COLORS[dept] || 'var(--accent)';
+              return `<div class="dept-bar">
+                <div class="top"><span>${dept}</span><span>${count} bemor${count !== 1 ? 'lar' : ''}</span></div>
+                <div class="track"><div class="fill" style="width:${pct}%;background:${col}"></div></div>
+              </div>`;
+            }).join('');
+          }
+        }
+
+        // ── Diagnosis Severity counts ──
+        const sevCount = { Critical: 0, Severe: 0, Moderate: 0, Mild: 0 };
+        diseases.forEach(d => { if (sevCount[d.severity] !== undefined) sevCount[d.severity]++; });
+        const sevEl = document.getElementById('dash-severity-counts');
+        if (sevEl) {
+          sevEl.innerHTML = [
+            { key: 'Critical', cls: 'badge-red',    col: 'var(--red)', label: "Jiddiy" },
+            { key: 'Severe',   cls: 'badge-amber',  col: 'var(--amber)', label: "Og'ir" },
+            { key: 'Moderate', cls: 'badge-amber',  col: 'var(--amber)', label: "O'rtacha" },
+            { key: 'Mild',     cls: 'badge-green',  col: 'var(--green)', label: "Yengil" }
+          ].filter(s => sevCount[s.key] > 0 || s.key === 'Critical' || s.key === 'Mild')
+           .map(s => `<div style="text-align:center;flex:1">
+              <div style="font-family:'DM Serif Display',serif;font-size:1.5rem;color:${s.col}">${sevCount[s.key]}</div>
+              <div class="badge ${s.cls}" style="margin-top:4px">${s.label}</div>
+            </div>`).join('');
+        }
+
+        // ── Departments active stat ──
+        const activeDepts = new Set(doctors.map(d => d.dept)).size;
+        const deptStatEl = document.querySelector('.stat-card[data-color="purple"] .stat-num');
+        if (deptStatEl) deptStatEl.textContent = activeDepts;
+      }
+
+      /* ══════════════ DOCTORS CRUD ══════════════ */
+      function renderDoctors() {
+        const q    = document.getElementById('search-doctors').value.toLowerCase();
+        const dept = document.getElementById('filter-dept').value;
+        const tbody = document.getElementById('doctors-tbody');
+
+
+        let list = doctors.filter(d => {
+          const match = (d.fname+' '+d.lname+' '+d.specialty).toLowerCase().includes(q);
+          const deptOk = !dept || d.dept === dept;
+          return match && deptOk;
+        });
+
+        if (!list.length) {
+          tbody.innerHTML = `<tr><td colspan="6"><div class="empty-state"><div class="icon">👨‍⚕️</div><h3>Shifokorlar topilmadi</h3><p>Qidiruv yoki filtrlarni o'zgartirib ko'ring.</p></div></td></tr>`;
+          return;
+        }
+
+        tbody.innerHTML = list.map(d => {
+          const patCount = patients.filter(p => p.doctorId === d.id).length;
+          const canEdit = currentRole === 'Admin';
+          return `<tr>
+            <td>
+              <div style="display:flex;align-items:center;gap:10px">
+                <div class="avatar">${initials(d.fname,d.lname)}</div>
+                <div>
+                  <div style="font-weight:500">
+                    Dr. ${d.fname} ${d.lname}
+                  </div>
+                  <div style="font-size:0.75rem;color:var(--text3)">
+                    ${d.email || '—'}
+                  </div>
+                </div>
+              </div>
+            </td>
+
+            <td>${d.specialty}</td>
+
+            <td>
+              <span class="badge badge-blue">${d.dept}</span>
+            </td>
+
+            <td style="font-size:0.82rem;color:var(--text2)">
+              ${d.phone || '—'}
+            </td>
+
+            <td>
+              <span class="mono">${patCount}</span>
+            </td>
+
+            <td>
+              <div style="display:flex;gap:6px">
+                ${
+                  canEdit
+                    ? `
+                      <button class="btn btn-ghost btn-sm btn-icon"
+                              title="Tahrirlash"
+                              onclick="editDoctor(${d.id})">
+                        ✏️
+                      </button>
+
+                      <button class="btn btn-danger btn-sm btn-icon"
+                              title="O'chirish"
+                              onclick="confirmDelete('doctor', ${d.id})">
+                        🗑️
+                      </button>
+                    `
+                    : `
+                      <span style="color:var(--text3);font-size:0.8rem">
+                        Faqat ko'rish
+                      </span>
+                    `
+                }
+              </div>
+            </td>
+
+          </tr>
+        `;
+      }).join('');
+      }
+
+
+      function editDoctor(id) {
+        const d = doctors.find(x => x.id === id);
+        if (!d) return;
+        document.getElementById('doctor-modal-title').textContent = 'Shifokorni tahrirlash';
+        document.getElementById('doctor-edit-id').value = id;
+        document.getElementById('doctor-fname').value = d.fname;
+        document.getElementById('doctor-lname').value = d.lname;
+        document.getElementById('doctor-specialty').value = d.specialty;
+        document.getElementById('doctor-dept').value = d.dept;
+        document.getElementById('doctor-email').value = d.email;
+        document.getElementById('doctor-phone').value = d.phone;
+        document.getElementById('doctor-notes').value = d.notes;
+        openModal('modal-add-doctor');
+      }
+
+      function saveDoctor() {
+        const fname = document.getElementById('doctor-fname').value.trim();
+        const lname = document.getElementById('doctor-lname').value.trim();
+        const specialty = document.getElementById('doctor-specialty').value;
+        const dept = document.getElementById('doctor-dept').value;
+        if (!fname||!lname||!specialty||!dept) { showToast("Barcha majburiy maydonlarni to'ldiring.",'error'); return; }
+
+        const editId = parseInt(document.getElementById('doctor-edit-id').value);
+        const obj = { fname, lname, specialty, dept,
+          email: document.getElementById('doctor-email').value.trim(),
+          phone: document.getElementById('doctor-phone').value.trim(),
+          notes: document.getElementById('doctor-notes').value.trim() };
+
+        if (editId) {
+          Object.assign(doctors.find(x=>x.id===editId), obj);
+          showToast('Shifokor muvaffaqiyatli yangilandi.','success');
+        } else {
+          obj.id = nextDoctorId++;
+          doctors.push(obj);
+          showToast("Shifokor muvaffaqiyatli qo'shildi.",'success');
+        }
+        closeModal('modal-add-doctor');
+        document.getElementById('doctor-edit-id').value = '';
+        document.getElementById('doctor-modal-title').textContent = "Yangi shifokor qo'shish";
+        ['doctor-fname','doctor-lname','doctor-email','doctor-phone','doctor-notes'].forEach(id => document.getElementById(id).value='');
+        document.getElementById('doctor-specialty').value=''; document.getElementById('doctor-dept').value='';
+        refreshSelects(); renderDoctors();
+      }
+
+      /* ══════════════ PATIENTS CRUD ══════════════ */
+      function renderPatients() {
+        const q      = document.getElementById('search-patients').value.toLowerCase();
+        const dept   = document.getElementById('filter-patient-dept').value;
+        const docId  = parseInt(document.getElementById('filter-patient-doctor').value) || 0;
+        const tbody  = document.getElementById('patients-tbody');
+
+        let list = patients.filter(p => {
+          const name = (p.fname+' '+p.lname).toLowerCase();
+          const doc  = doctors.find(d => d.id === p.doctorId);
+          const deptOk = !dept || (doc && doc.dept === dept);
+          const docOk  = !docId || p.doctorId === docId;
+          return name.includes(q) && deptOk && docOk;
+        });
+
+        if (!list.length) {
+          tbody.innerHTML = `<tr><td colspan="6"><div class="empty-state"><div class="icon">🧑‍⚕️</div><h3>Bemorlar topilmadi</h3><p>Qidiruvingrni o'zgartirib ko'ring.</p></div></td></tr>`;
+          return;
+        }
+
+        tbody.innerHTML = list.map(p => {
+          const diagCount = diseases.filter(d => d.patientId === p.id).length;
+          const canEdit = currentRole !== 'Receptionist';
+          return `<tr>
+            <td><div style="display:flex;align-items:center;gap:10px">
+              <div class="avatar" style="background:linear-gradient(135deg,#22c55e,#0096b7)">${initials(p.fname,p.lname)}</div>
+              <div><div style="font-weight:500">${p.fname} ${p.lname}</div>
+              <div style="font-size:0.75rem;color:var(--text3)">${p.email||'—'}</div></div>
+            </div></td>
+            <td style="font-size:0.82rem">${new Date(p.dob).toLocaleDateString('en-GB')} · <span style="color:var(--text2)">${getAge(p.dob)} yrs</span></td>
+            <td style="font-size:0.875rem">${getDoctorName(p.doctorId)}</td>
+            <td><span class="mono">${diagCount}</span></td>
+            <td>${statusBadge(p.status)}</td>
+            <td><div style="display:flex;gap:6px">
+              <button class="btn btn-ghost btn-sm btn-icon" title="Profilni ko'rish" onclick="viewProfile(${p.id})">👁️</button>
+              ${canEdit ? `<button class="btn btn-ghost btn-sm btn-icon" title="Tahrirlash" onclick="editPatient(${p.id})">✏️</button>` : ''}
+              ${currentRole==='Admin' ? `<button class="btn btn-danger btn-sm btn-icon" title="O'chirish" onclick="confirmDelete('patient',${p.id})">🗑️</button>` : ''}
+            </div></td>
+          </tr>`;
+        }).join('');
+      }
+
+      function editPatient(id) {
+        const p = patients.find(x => x.id === id);
+        if (!p) return;
+        document.getElementById('patient-modal-title').textContent = 'Bemorni tahrirlash';
+        document.getElementById('patient-edit-id').value = id;
+        document.getElementById('patient-fname').value = p.fname;
+        document.getElementById('patient-lname').value = p.lname;
+        document.getElementById('patient-dob').value = p.dob;
+        document.getElementById('patient-gender').value = p.gender;
+        document.getElementById('patient-phone').value = p.phone;
+        document.getElementById('patient-email').value = p.email;
+        document.getElementById('patient-address').value = p.address;
+        document.getElementById('patient-doctor').value = p.doctorId;
+        document.getElementById('patient-status').value = p.status;
+        document.getElementById('patient-notes').value = p.notes;
+        openModal('modal-add-patient');
+      }
+
+      function savePatient() {
+        const fname = document.getElementById('patient-fname').value.trim();
+        const lname = document.getElementById('patient-lname').value.trim();
+        const dob   = document.getElementById('patient-dob').value;
+        const docId = parseInt(document.getElementById('patient-doctor').value);
+        if (!fname||!lname||!dob||!docId) { showToast("Barcha majburiy maydonlarni to'ldiring.",'error'); return; }
+
+        const editId = parseInt(document.getElementById('patient-edit-id').value);
+        const obj = { fname, lname, dob, gender: document.getElementById('patient-gender').value,
+          phone: document.getElementById('patient-phone').value.trim(),
+          email: document.getElementById('patient-email').value.trim(),
+          address: document.getElementById('patient-address').value.trim(),
+          doctorId: docId, status: document.getElementById('patient-status').value,
+          notes: document.getElementById('patient-notes').value.trim() };
+
+        if (editId) {
+          Object.assign(patients.find(x=>x.id===editId), obj);
+          showToast('Bemor yangilandi.','success');
+        } else {
+          obj.id = nextPatientId++;
+          patients.push(obj);
+          showToast("Bemor ro'yxatga olingan.",'success');
+        }
+        closeModal('modal-add-patient');
+        document.getElementById('patient-edit-id').value = '';
+        document.getElementById('patient-modal-title').textContent = "Yangi bemorni ro'yxatga olish";
+        refreshSelects(); renderPatients();
+      }
+
+      /* ══════════════ DISEASES CRUD ══════════════ */
+      function renderDiseases() {
+        const q       = document.getElementById('search-diseases').value.toLowerCase();
+        const sev     = document.getElementById('filter-severity').value;
+        const patId   = parseInt(document.getElementById('filter-disease-patient').value) || 0;
+        const tbody   = document.getElementById('diseases-tbody');
+
+        let list = diseases.filter(d => {
+          const match = (d.icd+' '+d.desc).toLowerCase().includes(q);
+          const sevOk = !sev || d.severity === sev;
+          const patOk = !patId || d.patientId === patId;
+          return match && sevOk && patOk;
+        });
+
+        if (!list.length) {
+          tbody.innerHTML = `<tr><td colspan="6"><div class="empty-state"><div class="icon">📋</div><h3>Tashxislar topilmadi</h3><p>Qidiruvni o'zgartirib ko'ring.</p></div></td></tr>`;
+          return;
+        }
+
+        const canEdit = currentRole !== 'Receptionist';
+        tbody.innerHTML = list.map(d => `<tr>
+          <td><span class="mono" style="color:var(--accent)">${d.icd}</span></td>
+          <td style="max-width:240px" class="truncate">${d.desc}</td>
+          <td style="font-size:0.875rem">${getPatientName(d.patientId)}</td>
+          <td>${severityBadge(d.severity)}</td>
+          <td style="font-size:0.82rem;color:var(--text2)">${new Date(d.date).toLocaleDateString('en-GB')}</td>
+          <td><div style="display:flex;gap:6px">
+            ${canEdit ? `<button class="btn btn-ghost btn-sm btn-icon" title="Tahrirlash" onclick="editDisease(${d.id})">✏️</button>` : ''}
+            ${currentRole==='Admin' ? `<button class="btn btn-danger btn-sm btn-icon" title="O'chirish" onclick="confirmDelete('disease',${d.id})">🗑️</button>` : ''}
+            ${!canEdit ? '<span style="color:var(--text3);font-size:0.8rem">Faqat ko\'rish</span>' : ''}
+          </div></td>
+        </tr>`).join('');
+      }
+
+      function editDisease(id) {
+        const d = diseases.find(x => x.id === id);
+        if (!d) return;
+        document.getElementById('disease-modal-title').textContent = 'Tashxisni tahrirlash';
+        document.getElementById('disease-edit-id').value = id;
+        document.getElementById('disease-icd').value = d.icd;
+        document.getElementById('disease-desc').value = d.desc;
+        document.getElementById('disease-severity').value = d.severity;
+        document.getElementById('disease-patient').value = d.patientId;
+        document.getElementById('disease-date').value = d.date;
+        document.getElementById('disease-notes').value = d.notes;
+        openModal('modal-add-disease');
+      }
+
+      function saveDisease() {
+        const icd   = document.getElementById('disease-icd').value.trim();
+        const desc  = document.getElementById('disease-desc').value.trim();
+        const sev   = document.getElementById('disease-severity').value;
+        const patId = parseInt(document.getElementById('disease-patient').value);
+        const date  = document.getElementById('disease-date').value;
+        if (!icd||!desc||!sev||!patId||!date) { showToast("Barcha majburiy maydonlarni to'ldiring.",'error'); return; }
+
+        const editId = parseInt(document.getElementById('disease-edit-id').value);
+        const obj = { icd, desc, severity: sev, patientId: patId, date, notes: document.getElementById('disease-notes').value.trim() };
+
+          if (editId) {
+          Object.assign(diseases.find(x=>x.id===editId), obj);
+          showToast('Tashxis yangilandi.','success');
+        } else {
+          obj.id = nextDiseaseId++;
+          diseases.push(obj);
+          showToast('Tashxis qo\'shildi.','success');
+        }
+        closeModal('modal-add-disease');
+        document.getElementById('disease-edit-id').value = '';
+        document.getElementById('disease-modal-title').textContent = "Tashxis yozuvini qo'shish";
+        refreshSelects(); renderDiseases();
+      }
+
+      /* ══════════════ PATIENT PROFILE ══════════════ */
+      function viewProfile(patientId) {
+        const p = patients.find(x => x.id === patientId);
+        if (!p) return;
+        const doc = doctors.find(d => d.id === p.doctorId);
+        const diags = diseases.filter(d => d.patientId === patientId);
+        const canEdit = currentRole !== 'Receptionist';
+
+        let html = `
+        <div class="profile-header">
+          <div class="profile-avatar">${initials(p.fname,p.lname)}</div>
+          <div class="profile-info">
+            <h2>${p.fname} ${p.lname}</h2>
+            ${statusBadge(p.status)}
+            <div class="profile-meta">
+              <span>🎂 ${new Date(p.dob).toLocaleDateString('en-GB')} (${getAge(p.dob)} yrs)</span>
+              <span>⚥ ${p.gender}</span>
+              ${p.phone ? `<span>📞 ${p.phone}</span>` : ''}
+              ${p.email ? `<span>✉️ ${p.email}</span>` : ''}
+              ${p.address ? `<span>📍 ${p.address}</span>` : ''}
+            </div>
+          </div>
+          <div class="profile-actions">
+            ${canEdit ? `<button class="btn btn-ghost btn-sm" onclick="editPatient(${p.id})">✏️ Tahrirlash</button>` : ''}
+            <button class="btn btn-ghost btn-sm" onclick="openModal('modal-add-disease');document.getElementById('disease-patient').value=${p.id}">+ Tashxis qo'shish</button>
+          </div>
+        </div>
+
+        <div class="profile-grid">
+          <!-- Doctor Info -->
+          <div>
+            <div class="card" style="margin-bottom:1rem">
+              <div class="card-title">Assigned Doctor</div>
+              ${doc ? `<div style="display:flex;align-items:center;gap:12px;margin-bottom:1rem">
+                <div class="avatar">${initials(doc.fname,doc.lname)}</div>
+                <div><div style="font-weight:600">Dr. ${doc.fname} ${doc.lname}</div>
+                <div style="font-size:0.8rem;color:var(--text2)">${doc.specialty}</div></div>
+              </div>
+              <div class="detail-row"><span class="key">Department</span><span class="val"><span class="badge badge-blue">${doc.dept}</span></span></div>
+              <div class="detail-row"><span class="key">Email</span><span class="val" style="font-size:0.82rem">${doc.email||'—'}</span></div>
+              <div class="detail-row"><span class="key">Phone</span><span class="val">${doc.phone||'—'}</span></div>`
+              : '<p style="color:var(--text3);font-size:0.875rem">No doctor assigned.</p>'}
+            </div>
+
+            <div class="card">
+              <div class="card-title">Patient Details</div>
+              <div class="detail-row"><span class="key">Date of Birth</span><span class="val">${new Date(p.dob).toLocaleDateString('en-GB')}</span></div>
+              <div class="detail-row"><span class="key">Age</span><span class="val">${getAge(p.dob)} years</span></div>
+              <div class="detail-row"><span class="key">Gender</span><span class="val">${p.gender}</span></div>
+              <div class="detail-row"><span class="key">Phone</span><span class="val">${p.phone||'—'}</span></div>
+              <div class="detail-row"><span class="key">Email</span><span class="val" style="font-size:0.82rem">${p.email||'—'}</span></div>
+              <div class="detail-row"><span class="key">Address</span><span class="val">${p.address||'—'}</span></div>
+              ${p.notes ? `<div class="detail-row"><span class="key">Notes</span><span class="val">${p.notes}</span></div>` : ''}
+            </div>
+          </div>
+
+          <!-- Diagnoses -->
+          <div class="card">
+            <div class="card-title" style="display:flex;justify-content:space-between;align-items:center">
+              Diagnoses & Disease Records
+              <span class="badge badge-blue">${diags.length} record${diags.length!==1?'s':''}</span>
+            </div>
+            ${diags.length === 0
+              ? `<div class="empty-state" style="padding:2rem"><div class="icon">📋</div><h3>No diagnoses yet</h3><p>No disease records linked to this patient.</p></div>`
+              : diags.map(d => `
+                <div style="padding:1rem;background:var(--bg3);border-radius:var(--radius);margin-bottom:0.75rem;border:1px solid var(--border)">
+                  <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:0.5rem">
+                    <div>
+                      <span class="mono" style="color:var(--accent);font-size:0.9rem">${d.icd}</span>
+                      <div style="font-weight:500;margin-top:2px">${d.desc}</div>
+                    </div>
+                    ${severityBadge(d.severity)}
+                  </div>
+                  <div style="font-size:0.8rem;color:var(--text3);display:flex;gap:1rem;flex-wrap:wrap">
+                    <span>📅 ${new Date(d.date).toLocaleDateString('en-GB')}</span>
+                    ${d.notes ? `<span>📝 ${d.notes}</span>` : ''}
+                  </div>
+                  ${canEdit ? `<div style="margin-top:0.75rem;display:flex;gap:6px">
+                    <button class="btn btn-ghost btn-sm" onclick="editDisease(${d.id})">✏️ Tahrirlash</button>
+                    ${currentRole==='Admin' ? `<button class="btn btn-danger btn-sm" onclick="confirmDelete('disease',${d.id})">🗑️</button>` : ''}
+                  </div>` : ''}
+                </div>
+              `).join('')
+            }
+          </div>
+        </div>`;
+
+        document.getElementById('profile-content').innerHTML = html;
+        navTo('profile', null);
+      }
+
+      /* ══════════════ DELETE ══════════════ */
+      function confirmDelete(type, id) {
+        const names = { doctor: "shifokor", patient: "bemor yozuvi", disease: "tashxis yozuvi" };
+        document.getElementById('confirm-title').textContent = `O'chirish: ${names[type]}`;
+        document.getElementById('confirm-message').textContent = `Siz ushbu ${names[type]} ni doimiy o'chirishni xohlaysizmi? Bu amalni qaytarib bo'lmaydi.`;
+        document.getElementById('confirm-ok-btn').onclick = () => {
+          doDelete(type, id);
+          closeModal('modal-confirm');
+        };
+        openModal('modal-confirm');
+      }
+
+      function doDelete(type, id) {
+        if (type === 'doctor') {
+          if (patients.some(p => p.doctorId === id)) { showToast("O'chirib bo'lmadi: shifokorga bemorlar biriktirilgan.",'error'); return; }
+          doctors = doctors.filter(x => x.id !== id);
+          showToast('Shifokor o\'chirildi.','info');
+          refreshSelects(); renderDoctors();
+        } else if (type === 'patient') {
+          patients = patients.filter(x => x.id !== id);
+          diseases = diseases.filter(x => x.patientId !== id);
+          showToast("Bemor va bog'langan tashxislar o'chirildi.",'info');
+          refreshSelects(); renderPatients(); renderDiseases();
+        } else if (type === 'disease') {
+          diseases = diseases.filter(x => x.id !== id);
+          showToast('Tashxis o\'chirildi.','info');
+          refreshSelects(); renderDiseases();
+        }
+      }
+
+      /* ══════════════ MISC ══════════════ */
+      function toggleNotif() {
+        showToast("Yangi bildirishnomalar yo'q.",'info');
+      }
+
+      // Keyboard shortcut ESC
+      document.addEventListener('keydown', e => {
+        if (e.key === 'Escape') {
+          document.querySelectorAll('.modal-overlay:not(.hidden)').forEach(m => closeModal(m.id));
+        }
+      });
+
+      // Set today's date as default for date inputs
+      document.addEventListener('DOMContentLoaded', () => {
+        const today = new Date().toISOString().split('T')[0];
+        document.querySelectorAll('input[type=date]').forEach(i => { if(!i.value) i.value = today; });
+      });
+    </script>
+    <script src="js/app.js"></script>
+  </body>
+</html>
+`;
