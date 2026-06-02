@@ -17,7 +17,7 @@ node server.js
 > ```
 
 ### 3. Open the app
-Visit **http://localhost:5000** in your browser.
+Visit https://fullstak-project.onrender.com/ in your browser.
 
 ---
 
