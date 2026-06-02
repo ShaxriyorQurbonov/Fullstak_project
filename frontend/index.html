@@ -1934,14 +1934,9 @@
           <div style="margin-bottom: 1rem">
             <button
               class="btn btn-ghost btn-sm"
-              onclick="
-                navTo(
-                  'patients',
-                  document.querySelector('[data-page=patients]'),
-                )
-              "
+              onclick="navTo('patients', document.querySelector('[data-page=patients]'))"
             >
-              ← Bemorlar sahifasiga orqaga qaytish
+              ← Bemorlar ro'yxatiga qaytish
             </button>
           </div>
           <div id="profile-content"></div>
@@ -2420,12 +2415,12 @@
       ];
 
       var patients = [
-        {id:1,fname:'Alibek',lname:'Nazarov',dob:'1985-03-12',gender:'Male',phone:'+998 97 111 2233',email:'alibek@mail.uz',address:'Tashkent, Yunusabad',doctorId:1,status:'Active',notes:''},
-        {id:2,fname:'Dilnoza',lname:'Yusupova',dob:'1992-07-25',gender:'Female',phone:'+998 90 222 3344',email:'dilnoza@mail.uz',address:'Tashkent, Chilanzar',doctorId:2,status:'Active',notes:'Allergic to penicillin'},
-        {id:3,fname:'Sherzod',lname:'Tursunov',dob:'1978-11-05',gender:'Male',phone:'+998 93 333 4455',email:'sherzod@mail.uz',address:'Tashkent, Mirzo-Ulugbek',doctorId:1,status:'Active',notes:''},
-        {id:4,fname:'Kamola',lname:'Ergasheva',dob:'2001-01-30',gender:'Female',phone:'+998 94 444 5566',email:'kamola@mail.uz',address:'Tashkent, Sergeli',doctorId:3,status:'Discharged',notes:''},
-        {id:5,fname:'Nodir',lname:'Holmatov',dob:'1965-09-18',gender:'Male',phone:'+998 91 555 6677',email:'nodir@mail.uz',address:'Tashkent, Shaykhantahur',doctorId:4,status:'Active',notes:'Diabetes Type 2'},
-        {id:6,fname:'Zulfiya',lname:'Rakhimova',dob:'1995-04-22',gender:'Female',phone:'+998 95 666 7788',email:'zulfiya@mail.uz',address:'Tashkent, Uchtepa',doctorId:5,status:'Pending',notes:''},
+{id:1,fname:'Alibek',lname:'Nazarov',firstName:'Alibek',lastName:'Nazarov',dob:'1985-03-12',dateOfBirth:'1985-03-12',gender:'Male',phone:'+998 97 111 2233',contactPhone:'+998 97 111 2233',email:'alibek@mail.uz',contactEmail:'alibek@mail.uz',address:'Tashkent, Yunusabad',doctorId:1,assignedDoctorId:1,status:'Active',medicalHistory:'Hypertension',notes:'',registrationDate:'2026-01-20'},
+        {id:2,fname:'Dilnoza',lname:'Yusupova',firstName:'Dilnoza',lastName:'Yusupova',dob:'1992-07-25',dateOfBirth:'1992-07-25',gender:'Female',phone:'+998 90 222 3344',contactPhone:'+998 90 222 3344',email:'dilnoza@mail.uz',contactEmail:'dilnoza@mail.uz',address:'Tashkent, Chilanzar',doctorId:2,assignedDoctorId:2,status:'Active',medicalHistory:'Allergic to penicillin',notes:'Allergic to penicillin',registrationDate:'2026-01-25'},
+        {id:3,fname:'Sherzod',lname:'Tursunov',firstName:'Sherzod',lastName:'Tursunov',dob:'1978-11-05',dateOfBirth:'1978-11-05',gender:'Male',phone:'+998 93 333 4455',contactPhone:'+998 93 333 4455',email:'sherzod@mail.uz',contactEmail:'sherzod@mail.uz',address:'Tashkent, Mirzo-Ulugbek',doctorId:1,assignedDoctorId:1,status:'Active',medicalHistory:'',notes:'',registrationDate:'2026-02-01'},
+        {id:4,fname:'Kamola',lname:'Ergasheva',firstName:'Kamola',lastName:'Ergasheva',dob:'2001-01-30',dateOfBirth:'2001-01-30',gender:'Female',phone:'+998 94 444 5566',contactPhone:'+998 94 444 5566',email:'kamola@mail.uz',contactEmail:'kamola@mail.uz',address:'Tashkent, Sergeli',doctorId:3,assignedDoctorId:3,status:'Discharged',medicalHistory:'',notes:'',registrationDate:'2026-02-05'},
+        {id:5,fname:'Nodir',lname:'Holmatov',firstName:'Nodir',lastName:'Holmatov',dob:'1965-09-18',dateOfBirth:'1965-09-18',gender:'Male',phone:'+998 91 555 6677',contactPhone:'+998 91 555 6677',email:'nodir@mail.uz',contactEmail:'nodir@mail.uz',address:'Tashkent, Shaykhantahur',doctorId:4,assignedDoctorId:4,status:'Active',medicalHistory:'Diabetes Type 2',notes:'Diabetes Type 2',registrationDate:'2026-02-10'},
+        {id:6,fname:'Zulfiya',lname:'Rakhimova',firstName:'Zulfiya',lastName:'Rakhimova',dob:'1995-04-22',dateOfBirth:'1995-04-22',gender:'Female',phone:'+998 95 666 7788',contactPhone:'+998 95 666 7788',email:'zulfiya@mail.uz',contactEmail:'zulfiya@mail.uz',address:'Tashkent, Uchtepa',doctorId:5,assignedDoctorId:5,status:'Pending',medicalHistory:'',notes:'',registrationDate:'2026-02-15'},
       ];
 
       var diseases = [
@@ -2608,7 +2603,8 @@
       }
       function statusBadge(s) {
         const map = { Active:'badge-green', Discharged:'badge-red', Pending:'badge-amber' };
-        return `<span class="badge ${map[s]||'badge-blue'}">${s}</span>`;
+        const labelMap = { Active:'Faol', Discharged:'Chiqilgan', Pending:'Kutilmoqda' };
+        return `<span class="badge ${map[s]||'badge-blue'}">${labelMap[s] || s}</span>`;
       }
 
       /* ══════════════ DASHBOARD ══════════════ */
@@ -2873,10 +2869,10 @@
           return `<tr>
             <td><div style="display:flex;align-items:center;gap:10px">
               <div class="avatar" style="background:linear-gradient(135deg,#22c55e,#0096b7)">${initials(p.fname,p.lname)}</div>
-              <div><div style="font-weight:500">${p.fname} ${p.lname}</div>
+              <div><button type="button" onclick="viewProfile(${p.id})" style="background:none;border:none;padding:0;margin:0;font:inherit;color:var(--accent);font-weight:600;cursor:pointer;text-align:left">${p.fname} ${p.lname}</button>
               <div style="font-size:0.75rem;color:var(--text3)">${p.email||'—'}</div></div>
             </div></td>
-            <td style="font-size:0.82rem">${new Date(p.dob).toLocaleDateString('en-GB')} · <span style="color:var(--text2)">${getAge(p.dob)} yrs</span></td>
+            <td style="font-size:0.82rem">${new Date(p.dob).toLocaleDateString('en-GB')} · <span style="color:var(--text2)">${getAge(p.dob)} yosh</span></td>
             <td style="font-size:0.875rem">${getDoctorName(p.doctorId)}</td>
             <td><span class="mono">${diagCount}</span></td>
             <td>${statusBadge(p.status)}</td>
@@ -3024,8 +3020,8 @@
             <h2>${p.fname} ${p.lname}</h2>
             ${statusBadge(p.status)}
             <div class="profile-meta">
-              <span>🎂 ${new Date(p.dob).toLocaleDateString('en-GB')} (${getAge(p.dob)} yrs)</span>
-              <span>⚥ ${p.gender}</span>
+              <span>🎂 ${new Date(p.dob).toLocaleDateString('en-GB')} · ${getAge(p.dob)} yosh</span>
+              <span>⚥ ${p.gender || '—'}</span>
               ${p.phone ? `<span>📞 ${p.phone}</span>` : ''}
               ${p.email ? `<span>✉️ ${p.email}</span>` : ''}
               ${p.address ? `<span>📍 ${p.address}</span>` : ''}
@@ -3038,52 +3034,56 @@
         </div>
 
         <div class="profile-grid">
-          <!-- Doctor Info -->
+          <!-- Patient Details -->
           <div>
             <div class="card" style="margin-bottom:1rem">
-              <div class="card-title">Assigned Doctor</div>
-              ${doc ? `<div style="display:flex;align-items:center;gap:12px;margin-bottom:1rem">
-                <div class="avatar">${initials(doc.fname,doc.lname)}</div>
-                <div><div style="font-weight:600">Dr. ${doc.fname} ${doc.lname}</div>
-                <div style="font-size:0.8rem;color:var(--text2)">${doc.specialty}</div></div>
-              </div>
-              <div class="detail-row"><span class="key">Department</span><span class="val"><span class="badge badge-blue">${doc.dept}</span></span></div>
-              <div class="detail-row"><span class="key">Email</span><span class="val" style="font-size:0.82rem">${doc.email||'—'}</span></div>
-              <div class="detail-row"><span class="key">Phone</span><span class="val">${doc.phone||'—'}</span></div>`
-              : '<p style="color:var(--text3);font-size:0.875rem">No doctor assigned.</p>'}
+              <div class="card-title">Bemor tafsilotlari</div>
+              <div class="detail-row"><span class="key">Ism</span><span class="val">${p.fname}</span></div>
+              <div class="detail-row"><span class="key">Familiya</span><span class="val">${p.lname}</span></div>
+              <div class="detail-row"><span class="key">Tug'ilgan sana</span><span class="val">${new Date(p.dob).toLocaleDateString('en-GB')}</span></div>
+              <div class="detail-row"><span class="key">Jinsi</span><span class="val">${p.gender || '—'}</span></div>
+              <div class="detail-row"><span class="key">Elektron pochta</span><span class="val" style="font-size:0.82rem">${p.email || '—'}</span></div>
+              <div class="detail-row"><span class="key">Telefon</span><span class="val">${p.phone || '—'}</span></div>
+              <div class="detail-row"><span class="key">Manzil</span><span class="val">${p.address || '—'}</span></div>
+              <div class="detail-row"><span class="key">Ro'yxatga olingan sana</span><span class="val">${p.registrationDate || '—'}</span></div>
+              <div class="detail-row"><span class="key">Tibbiy tarixi</span><span class="val">${p.medicalHistory || 'Yoʻq'}</span></div>
+              <div class="detail-row"><span class="key">Holati</span><span class="val">${p.status || '—'}</span></div>
             </div>
 
             <div class="card">
-              <div class="card-title">Patient Details</div>
-              <div class="detail-row"><span class="key">Date of Birth</span><span class="val">${new Date(p.dob).toLocaleDateString('en-GB')}</span></div>
-              <div class="detail-row"><span class="key">Age</span><span class="val">${getAge(p.dob)} years</span></div>
-              <div class="detail-row"><span class="key">Gender</span><span class="val">${p.gender}</span></div>
-              <div class="detail-row"><span class="key">Phone</span><span class="val">${p.phone||'—'}</span></div>
-              <div class="detail-row"><span class="key">Email</span><span class="val" style="font-size:0.82rem">${p.email||'—'}</span></div>
-              <div class="detail-row"><span class="key">Address</span><span class="val">${p.address||'—'}</span></div>
-              ${p.notes ? `<div class="detail-row"><span class="key">Notes</span><span class="val">${p.notes}</span></div>` : ''}
+              <div class="card-title">Shifokor ma'lumotlari</div>
+              ${doc ? `<div style="display:flex;align-items:center;gap:12px;margin-bottom:1rem">
+                <div class="avatar">${initials(doc.fname,doc.lname)}</div>
+                <div><div style="font-weight:600">${doc.name || `Dr. ${doc.fname} ${doc.lname}`}</div>
+                <div style="font-size:0.8rem;color:var(--text2)">${doc.specialty}</div></div>
+              </div>
+              <div class="detail-row"><span class="key">Mutaxassisligi</span><span class="val">${doc.specialty || '—'}</span></div>
+              <div class="detail-row"><span class="key">Bo'lim</span><span class="val"><span class="badge badge-blue">${doc.dept || doc.department || '—'}</span></span></div>
+              <div class="detail-row"><span class="key">Elektron pochta</span><span class="val" style="font-size:0.82rem">${doc.email || doc.contactEmail || '—'}</span></div>
+              <div class="detail-row"><span class="key">Telefon</span><span class="val">${doc.phone || doc.contactPhone || '—'}</span></div>`
+              : '<p style="color:var(--text3);font-size:0.875rem">Bu bemorga shifokor biriktirilmagan.</p>'}
             </div>
           </div>
 
           <!-- Diagnoses -->
           <div class="card">
             <div class="card-title" style="display:flex;justify-content:space-between;align-items:center">
-              Diagnoses & Disease Records
-              <span class="badge badge-blue">${diags.length} record${diags.length!==1?'s':''}</span>
+              Tashxislar va kasallik yozuvlari
+              <span class="badge badge-blue">${diags.length} yozuv</span>
             </div>
             ${diags.length === 0
-              ? `<div class="empty-state" style="padding:2rem"><div class="icon">📋</div><h3>No diagnoses yet</h3><p>No disease records linked to this patient.</p></div>`
+              ? `<div class="empty-state" style="padding:2rem"><div class="icon">📋</div><h3>Hozircha tashxis yozuvi yo'q</h3><p>Bu bemorga oid tashxis yozuvlari hozircha mavjud emas.</p></div>`
               : diags.map(d => `
                 <div style="padding:1rem;background:var(--bg3);border-radius:var(--radius);margin-bottom:0.75rem;border:1px solid var(--border)">
                   <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:0.5rem">
                     <div>
-                      <span class="mono" style="color:var(--accent);font-size:0.9rem">${d.icd}</span>
-                      <div style="font-weight:500;margin-top:2px">${d.desc}</div>
+                      <span class="mono" style="color:var(--accent);font-size:0.9rem">${d.icd || d.icdCode}</span>
+                      <div style="font-weight:500;margin-top:2px">${d.desc || d.description}</div>
                     </div>
                     ${severityBadge(d.severity)}
                   </div>
                   <div style="font-size:0.8rem;color:var(--text3);display:flex;gap:1rem;flex-wrap:wrap">
-                    <span>📅 ${new Date(d.date).toLocaleDateString('en-GB')}</span>
+                    <span>📅 ${new Date(d.date || d.diagnosisDate).toLocaleDateString('en-GB')}</span>
                     ${d.notes ? `<span>📝 ${d.notes}</span>` : ''}
                   </div>
                   ${canEdit ? `<div style="margin-top:0.75rem;display:flex;gap:6px">
@@ -3091,8 +3091,7 @@
                     ${currentRole==='Admin' ? `<button class="btn btn-danger btn-sm" onclick="confirmDelete('disease',${d.id})">🗑️</button>` : ''}
                   </div>` : ''}
                 </div>
-              `).join('')
-            }
+              `).join('')}
           </div>
         </div>`;
 
